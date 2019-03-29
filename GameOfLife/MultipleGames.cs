@@ -8,10 +8,10 @@ namespace GameOfLife
         private readonly Generations _generations;
         private readonly UserInterFace _userInterFace;
 
-        public MultipleGames(Generations _generations, UserInterFace _userInterFace)
+        public MultipleGames(Generations generations, UserInterFace userInterFace)
         {
-            this._generations = _generations;
-            this._userInterFace = _userInterFace;
+            this._generations = generations;
+            this._userInterFace = userInterFace;
         }
          
         public void PlayMultiGame(params MultipleGames[] games)

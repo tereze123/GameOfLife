@@ -11,12 +11,12 @@ namespace GameOfLife
         private readonly FileOperations _fileStore;
         private readonly UserInterFace _userInterFace;
 
-        public SingleGame(GameStatistics statistics, Generations generations,FileOperations fileStore, UserInterFace userInterFace)
+        public SingleGame(GameStatistics statistics, Generations generations, FileOperations fileStore, UserInterFace userInterFace)
         {
-            this.statistics = statistics;
-            this.generations = generations;
-            this.fileStore = fileStore;
-            this.userInterFace = userInterFace;
+            this._statistics = statistics;
+            this._generations = generations;
+            this._fileStore = fileStore;
+            this._userInterFace = userInterFace;
         }
         
         public void StartMenu()
@@ -126,10 +126,10 @@ namespace GameOfLife
 
         private void StartGameFromLoadedFile()
         {
-            int[,] firstArray = fileStore.ReturnSavedArrayFromFile();
+            int[,] firstArray = _fileStore.ReturnSavedArrayFromFile();
             int arraySize = firstArray.GetLength(0);
-            var secondArray = generations.CreateArray(arraySize);
-            userInterFace.ClearGameScreen();
+            var secondArray = _generations.CreateArray(arraySize);
+            _userInterFace.ClearGameScreen();
             PlayGame(firstArray,secondArray);
         }
 
