@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Threading;
 
 namespace GameOfLife
 {
-    class Program
+    public class Program
     {               
         static void Main(string[] args)
         {
-            FileStore fileStore = new FileStore();
+            FileOperations fileStore = new FileOperations();
             GameStatistics statistics = new GameStatistics();
             GameLogic gameLogic = new GameLogic();
+            UserInterFace userInterFace = new UserInterFace();
             Generations generations = new Generations(gameLogic);
 
-            Game game = new Game(statistics, generations, gameLogic, fileStore);
-
+            SingleGame game = new SingleGame(statistics, generations, fileStore, userInterFace);
             game.StartMenu();
             Console.ReadLine();
         }

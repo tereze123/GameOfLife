@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace GameOfLife
 {
-    public class FileStore
+    public class FileOperations
     {
-        public void CreateFolderOnDesktop()
+        private void CreateFolderOnDesktop()
         {
             var folder = Path.Combine(GetPath(), "TESTA FOLDERIS");
             Directory.CreateDirectory(folder);
         }
 
-        public string GetPath()
+        private string GetPath()
         {
             var path = "C:\\Users\\tereze.elize.empele\\Desktop\\";
             return path;
@@ -22,6 +20,7 @@ namespace GameOfLife
 
         public void WriteTheArrayIntoFile(  int[,] array)
         {
+            CreateFolderOnDesktop();
             var arrayLength = array.GetLength(0);
             var path = Path.Combine(GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
 
