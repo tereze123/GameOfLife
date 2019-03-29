@@ -21,7 +21,7 @@
         }
         public bool WillSurvive(  int[,] arr, int x, int y)
         {
-            int neighbours = CountNeighbours(  arr,x,y);
+            int neighbours = CountNeighbours(arr,x,y);
 
             int valueOfThis = arr[x, y];
 
