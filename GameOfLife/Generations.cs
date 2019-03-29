@@ -4,11 +4,11 @@ namespace GameOfLife
 {
     public class Generations
     {
-        private readonly GameLogic gameLogic;
+        private readonly GameLogic _gameLogic;
 
         public Generations(GameLogic gameLogic)
         {
-            this.gameLogic = gameLogic;
+            this._gameLogic = gameLogic;
         }
 
         public int[,] CreateArray(int arraySize) => new int[arraySize, arraySize];
@@ -35,7 +35,7 @@ namespace GameOfLife
             {
                 for (int j = 0; j < arraySize; j++)
                 {
-                    if (gameLogic.WillSurvive(  firstarr, i, j))
+                    if (this._gameLogic.WillSurvive(  firstarr, i, j))
                     {
                         secondArr[i, j] = 1;
                     }

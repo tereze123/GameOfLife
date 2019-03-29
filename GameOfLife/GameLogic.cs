@@ -2,7 +2,7 @@
 {
     public class GameLogic
     {
-        public int CountNeighbours(  int[,] arr, int x, int y)
+        private int CountNeighbours(  int[,] arr, int x, int y)
         {
             var arraySize = arr.GetLength(0);
             int sum = 0;
@@ -19,7 +19,6 @@
 
             return sum;
         }
-
         public bool WillSurvive(  int[,] arr, int x, int y)
         {
             int neighbours = CountNeighbours(  arr,x,y);

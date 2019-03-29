@@ -6,10 +6,10 @@ namespace GameOfLife
     public class SingleGame:Game
     {
         
-        private readonly GameStatistics statistics;
-        private readonly Generations generations;
-        private readonly FileOperations fileStore;
-        private readonly UserInterFace userInterFace;
+        private readonly GameStatistics _statistics;
+        private readonly Generations _generations;
+        private readonly FileOperations _fileStore;
+        private readonly UserInterFace _userInterFace;
 
         public SingleGame(GameStatistics statistics, Generations generations,FileOperations fileStore, UserInterFace userInterFace)
         {
@@ -21,7 +21,7 @@ namespace GameOfLife
         
         public void StartMenu()
         {
-            int usersChoice = userInterFace.GetUserInputForStartMenu();
+            int usersChoice = _userInterFace.GetUserInputForStartMenu();
             switch (usersChoice)
             {
                 case 1:
@@ -32,20 +32,20 @@ namespace GameOfLife
                     StartGameFromLoadedFile();
                     break;
                 case 3:
-                    MultipleGames games = new MultipleGames(generations, statistics, userInterFace);
-                    games.PlayMultiGame(new MultipleGames(generations, statistics, userInterFace), new MultipleGames(generations, statistics, userInterFace));
+                    MultipleGames games = new MultipleGames(_generations, _userInterFace);
+                    games.PlayMultiGame(new MultipleGames(_generations, _userInterFace), new MultipleGames(_generations, _userInterFace));
                     break;
             }
         }
 
         private void SaveGame(int[,] array)
         {
-            this.fileStore.WriteTheArrayIntoFile(array);
+            this._fileStore.WriteTheArrayIntoFile(array);
         }
 
         private void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
         {
-           int continueGame = userInterFace.GetUserInputForPausedGame(firstArray);
+           int continueGame = _userInterFace.GetUserInputForPausedGame(firstArray);
 
             switch (continueGame)
             {
@@ -81,40 +81,40 @@ namespace GameOfLife
             do
             {
                 //GET STATISTICS
-                allCellCount = statistics.GetAllCellCount(firstArray);
-                aliveCellCount = statistics.GetAliveCellCount(firstArray);
-                deadCellCount = statistics.GetDeadCellCount(allCellCount, aliveCellCount);
+                allCellCount = _statistics.GetAllCellCount(firstArray);
+                aliveCellCount = _statistics.GetAliveCellCount(firstArray);
+                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
                 //DELAY APPLICATION 1 SECOND
                 Thread.Sleep(1000);
 
                 //DRAW ARRAY AND STATISTICS
-                userInterFace.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
-                userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+                _userInterFace.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
+                _userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
 
                 //SET CURRENT ARRAY FOR SAVING PURPOSES
                 currentArray = 1;
 
                 //GET THE NEXT GENERATION ARRAY
-                secondArray = generations.GetNewGenerationArray(firstArray,   secondArray);
+                secondArray = _generations.GetNewGenerationArray(firstArray,   secondArray);
 
                 //GET STATISTICS
-                allCellCount = statistics.GetAllCellCount(secondArray);
-                aliveCellCount = statistics.GetAliveCellCount(secondArray);
-                deadCellCount = statistics.GetDeadCellCount(allCellCount, aliveCellCount);
+                allCellCount = _statistics.GetAllCellCount(secondArray);
+                aliveCellCount = _statistics.GetAliveCellCount(secondArray);
+                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
                 //DELAY APPLICATION 1 SECOND
                 Thread.Sleep(1000);
 
                 //DRAW ARRAY AND STATISTICS
-                userInterFace.DrawGameArrayOnScreen(secondArray, cursorLeft, cursorTop);
-                userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+                _userInterFace.DrawGameArrayOnScreen(secondArray, cursorLeft, cursorTop);
+                _userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
 
                 //SET CURRENT ARRAY FOR SAVING PURPOSES
                 currentArray = 2;
 
                 //GET THE NEXT GENERATION ARRAY
-                firstArray = generations.GetNewGenerationArray(  secondArray,   firstArray);
+                firstArray = _generations.GetNewGenerationArray(  secondArray,   firstArray);
 
                 //INCREASE THE ITERATION COUNTER
                 iterationCount++;
@@ -135,21 +135,21 @@ namespace GameOfLife
 
         private void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
         {
-            int sizeOfField = userInterFace.GetFieldSizeFromUser();
-            FirstArray = generations.CreateArray(sizeOfField);
-            SecondArray = generations.CreateArray(sizeOfField);
-            generations.InitializeArray(FirstArray);
-            userInterFace.ClearGameScreen();
+            int sizeOfField = _userInterFace.GetFieldSizeFromUser();
+            FirstArray = _generations.CreateArray(sizeOfField);
+            SecondArray = _generations.CreateArray(sizeOfField);
+            _generations.InitializeArray(FirstArray);
+            _userInterFace.ClearGameScreen();
             PlayGame(FirstArray, SecondArray, cursorLeft, cursorTop);            
         }
 
         private void StartNewMultiGame(int cursorLeft = 0, int cursorTop = 0)
         {
-            int sizeOfField = userInterFace.GetFieldSizeFromUser();
-            FirstArray = generations.CreateArray(sizeOfField);
-            SecondArray = generations.CreateArray(sizeOfField);
-            generations.InitializeArray(FirstArray);
-            userInterFace.ClearGameScreen();
+            int sizeOfField = _userInterFace.GetFieldSizeFromUser();
+            FirstArray = _generations.CreateArray(sizeOfField);
+            SecondArray = _generations.CreateArray(sizeOfField);
+            _generations.InitializeArray(FirstArray);
+            _userInterFace.ClearGameScreen();
             PlayGame(FirstArray, SecondArray, cursorLeft, cursorTop);
         }
 
