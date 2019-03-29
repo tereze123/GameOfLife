@@ -82,26 +82,52 @@ namespace GameOfLife
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void DrawGameArrayOnScreen(int[,] arr, int cursorLeft = 0, int cursorTop = 0)
+        public void DrawGameArrayOnScreen(int[,] arr, int cursorLeft = 0, int cursorTop = 1)
         {
             int arraySize = arr.GetLength(0);
             SetCursorAndBackgroundColorBlack();
-            for (int i = 0; i < arraySize; i++)
+            for (int i = -1; i < arraySize-1; i++)
             {
-                Console.SetCursorPosition(cursorLeft, cursorTop + i);
-                for (int j = 0; j < arraySize; j++)
+                for (int j = -1; j < arraySize-1 ; j++)
                 {
-                    if (arr[i, j] == 1)
+                    Console.SetCursorPosition(cursorLeft+((j+2)*3), cursorTop + i + 1);
+                    if (i == -1 || j == -1)
                     {
-                        SetCursorAndBackgroundColorWhite();
-                        Console.Write($" " + arr[i, j] + " ");
-                        SetCursorAndBackgroundColorBlack();
+                        SetBackgroundBlackAndWhiteText();
+
+                        Console.Write("===");
                     }
                     else
                     {
-                        SetCursorAndBackgroundColorBlack();
-                        Console.Write($" " + arr[i, j] + " ");
+                        if (arr[i + 1, j+1] == 1)
+                        {
+                            SetCursorAndBackgroundColorWhite();
+                            Console.Write($" " + arr[i + 1, j+1] + " ");
+                            SetCursorAndBackgroundColorBlack();
+                        }
+                        else
+                        {
+
+                            SetCursorAndBackgroundColorBlack();
+                            Console.Write($" " + arr[i + 1, j+1] + " ");
+                        }
+
+                        if (j == arraySize - 2)
+                        {
+                            Console.SetCursorPosition(cursorLeft + ((j + 2) * 3) +3, cursorTop + i + 1);
+                            SetBackgroundBlackAndWhiteText();
+
+                            Console.Write("===");
+                        }
                     }
+
+                if (i == arraySize - 2)
+                {
+                        Console.SetCursorPosition(cursorLeft + ((j + 2) * 3), cursorTop + i + 2);
+                        SetBackgroundBlackAndWhiteText();
+
+                    Console.Write("===");
+                }
                 }
                 SetCursorAndBackgroundColorBlack();
             }

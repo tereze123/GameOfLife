@@ -13,10 +13,10 @@ namespace GameOfLife
 
         public SingleGame(GameStatistics statistics, Generations generations,FileOperations fileStore, UserInterFace userInterFace)
         {
-            this.statistics = statistics;
-            this.generations = generations;
-            this.fileStore = fileStore;
-            this.userInterFace = userInterFace;
+            this._statistics = statistics;
+            this._generations = generations;
+            this._fileStore = fileStore;
+            this._userInterFace = userInterFace;
         }
         
         public void StartMenu()
@@ -50,6 +50,7 @@ namespace GameOfLife
             switch (continueGame)
             {
                 case 1:
+                    _userInterFace.ClearGameScreen();
                     PlayGame(  firstArray,   secondArray);
                     break;
                 case 2:
@@ -70,14 +71,13 @@ namespace GameOfLife
             }
         }
 
-        private void PlayGame(  int[,] firstArray, int[,] secondArray, int cursorLeft = 0, int cursorTop = 0)
+        private void PlayGame(  int[,] firstArray, int[,] secondArray, int cursorLeft = 1, int cursorTop = 1, int iterationCount = 1)
         {
             int allCellCount;
             int aliveCellCount;
             int deadCellCount;
             int arraySize = firstArray.GetLength(0);
-            int currentArray = 0;
-            int iterationCount = 1;           
+            int currentArray = 0;          
             do
             {
                 //GET STATISTICS
@@ -85,12 +85,13 @@ namespace GameOfLife
                 aliveCellCount = _statistics.GetAliveCellCount(firstArray);
                 deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
-                //DELAY APPLICATION 1 SECOND
-                Thread.Sleep(1000);
 
                 //DRAW ARRAY AND STATISTICS
                 _userInterFace.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
                 _userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+
+                //DELAY APPLICATION 1 SECOND
+                Thread.Sleep(1000);
 
                 //SET CURRENT ARRAY FOR SAVING PURPOSES
                 currentArray = 1;
@@ -103,12 +104,14 @@ namespace GameOfLife
                 aliveCellCount = _statistics.GetAliveCellCount(secondArray);
                 deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
-                //DELAY APPLICATION 1 SECOND
-                Thread.Sleep(1000);
 
+                iterationCount++;
                 //DRAW ARRAY AND STATISTICS
                 _userInterFace.DrawGameArrayOnScreen(secondArray, cursorLeft, cursorTop);
                 _userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+
+                //DELAY APPLICATION 1 SECOND
+                Thread.Sleep(1000);
 
                 //SET CURRENT ARRAY FOR SAVING PURPOSES
                 currentArray = 2;
@@ -126,10 +129,10 @@ namespace GameOfLife
 
         private void StartGameFromLoadedFile()
         {
-            int[,] firstArray = fileStore.ReturnSavedArrayFromFile();
+            int[,] firstArray = _fileStore.ReturnSavedArrayFromFile();
             int arraySize = firstArray.GetLength(0);
-            var secondArray = generations.CreateArray(arraySize);
-            userInterFace.ClearGameScreen();
+            var secondArray = _generations.CreateArray(arraySize);
+            _userInterFace.ClearGameScreen();
             PlayGame(firstArray,secondArray);
         }
 
