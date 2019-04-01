@@ -9,19 +9,22 @@ namespace GameOfLife
         private readonly GameStatistics _statistics;
         private readonly Generations _generations;
         private readonly FileOperations _fileStore;
-        private readonly UserInterFace _userInterFace;
+        private readonly Input _input;
+        private readonly Output _output;
 
-        public SingleGame(GameStatistics statistics, Generations generations,FileOperations fileStore, UserInterFace userInterFace)
+
+        public SingleGame(GameStatistics statistics, Generations generations,FileOperations fileStore, Output output, Input input)
         {
             this._statistics = statistics;
             this._generations = generations;
             this._fileStore = fileStore;
-            this._userInterFace = userInterFace;
+            this._input = input;
+            this._output = output;
         }
         
         public void StartMenu()
         {
-            int usersChoice = _userInterFace.GetUserInputForStartMenu();
+            int usersChoice = _input.GetValidUserInputForStartMenu();
             switch (usersChoice)
             {
                 case 1:
@@ -32,8 +35,8 @@ namespace GameOfLife
                     StartGameFromLoadedFile();
                     break;
                 case 3:
-                    MultipleGames games = new MultipleGames(_generations, _userInterFace);
-                    games.PlayMultiGame(new MultipleGames(_generations, _userInterFace), new MultipleGames(_generations, _userInterFace));
+                    MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
+                    games.PlayMultiGame(new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations())), new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations())));
                     break;
             }
         }
@@ -45,23 +48,17 @@ namespace GameOfLife
 
         private void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
         {
-           int continueGame = _userInterFace.GetUserInputForPausedGame(firstArray);
+           int continueGame = _input.GetValidUserInputForPausedGame(firstArray);
 
             switch (continueGame)
             {
                 case 1:
-                    _userInterFace.ClearGameScreen();
+                    _output.ClearGameScreen();
                     PlayGame(  firstArray,   secondArray);
                     break;
                 case 2:
-                    if (currentArray == 1)
-                    {
-                        SaveGame(firstArray);
-                    }
-                    else
-                    {
-                        SaveGame(secondArray);
-                    }                    
+                    if (currentArray == 1) SaveGame(firstArray);                    
+                    else SaveGame(secondArray);           
                     break;
                 case 3:
                     Environment.Exit(0);
@@ -87,8 +84,8 @@ namespace GameOfLife
 
 
                 //DRAW ARRAY AND STATISTICS
-                _userInterFace.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
-                _userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+               _output.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
+                _output.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
 
                 //DELAY APPLICATION 1 SECOND
                 Thread.Sleep(1000);
@@ -107,8 +104,8 @@ namespace GameOfLife
 
                 iterationCount++;
                 //DRAW ARRAY AND STATISTICS
-                _userInterFace.DrawGameArrayOnScreen(secondArray, cursorLeft, cursorTop);
-                _userInterFace.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+                _output.DrawGameArrayOnScreen(secondArray, cursorLeft, cursorTop);
+                _output.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
 
                 //DELAY APPLICATION 1 SECOND
                 Thread.Sleep(1000);
@@ -122,9 +119,9 @@ namespace GameOfLife
                 //INCREASE THE ITERATION COUNTER
                 iterationCount++;
 
-            } while ((!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)));
+            } while (!Input.EscapeKeyWasPressed());
 
-            PauseGame(firstArray,   secondArray, currentArray);
+            PauseGame(firstArray, secondArray, currentArray);
         }
 
         private void StartGameFromLoadedFile()
@@ -132,27 +129,27 @@ namespace GameOfLife
             int[,] firstArray = _fileStore.ReturnSavedArrayFromFile();
             int arraySize = firstArray.GetLength(0);
             var secondArray = _generations.CreateArray(arraySize);
-            _userInterFace.ClearGameScreen();
+            _output.ClearGameScreen();
             PlayGame(firstArray,secondArray);
         }
 
         private void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
         {
-            int sizeOfField = _userInterFace.GetFieldSizeFromUser();
+            int sizeOfField = _input.GetValidFieldSizeFromUser();
             FirstArray = _generations.CreateArray(sizeOfField);
             SecondArray = _generations.CreateArray(sizeOfField);
             _generations.InitializeArray(FirstArray);
-            _userInterFace.ClearGameScreen();
+            _output.ClearGameScreen();
             PlayGame(FirstArray, SecondArray, cursorLeft, cursorTop);            
         }
 
         private void StartNewMultiGame(int cursorLeft = 0, int cursorTop = 0)
         {
-            int sizeOfField = _userInterFace.GetFieldSizeFromUser();
+            int sizeOfField = _input.GetValidFieldSizeFromUser();
             FirstArray = _generations.CreateArray(sizeOfField);
             SecondArray = _generations.CreateArray(sizeOfField);
             _generations.InitializeArray(FirstArray);
-            _userInterFace.ClearGameScreen();
+            _output.ClearGameScreen();
             PlayGame(FirstArray, SecondArray, cursorLeft, cursorTop);
         }
 

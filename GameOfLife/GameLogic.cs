@@ -2,9 +2,18 @@
 {
     public class GameLogic
     {
+        private bool ThreeOrTwoAliveNeighbors(int neighbours)
+        {
+           return (neighbours == 2 || neighbours == 3) ? true : false;
+        }
+        private bool ThreeAliveNeighbours(int neighbours)
+        {
+            return (neighbours == 3) ? true : false;
+        }
+
         private int CountNeighbours(  int[,] arr, int x, int y)
         {
-            var arraySize = arr.GetLength(0);
+            var arraySize = Generations.GetArraySize(arr);
             int sum = 0;
             for (int i = - 1; i < 2; i++)
             {
@@ -27,25 +36,11 @@
 
             if(valueOfThis == 1)
             {
-                if (neighbours == 2 || neighbours == 3)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return (ThreeOrTwoAliveNeighbors(neighbours)) ? true : false;
             }
             else
             {
-                if (neighbours == 3)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return (ThreeAliveNeighbours(neighbours)) ? true : false;
             }
         }
     }

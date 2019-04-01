@@ -21,7 +21,7 @@ namespace GameOfLife
         public void WriteTheArrayIntoFile(  int[,] array)
         {
             CreateFolderOnDesktop();
-            var arrayLength = array.GetLength(0);
+            var arrayLength = Generations.GetArraySize(array);
             var path = Path.Combine(GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
 
             using (System.IO.StreamWriter file =
@@ -66,6 +66,5 @@ namespace GameOfLife
             }
             return array;
         }
-
     }
 }

@@ -1,22 +1,25 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 
 namespace GameOfLife
 {
     public class MultipleGames:Game
     {
         private readonly Generations _generations;
-        private readonly UserInterFace _userInterFace;
+        private readonly Output _output;
 
-        public MultipleGames(Generations _generations, UserInterFace _userInterFace)
+
+        public MultipleGames(Generations _generations, Output output)
         {
             this._generations = _generations;
-            this._userInterFace = _userInterFace;
+            this._output = output;
+
         }
          
         public void PlayMultiGame(params MultipleGames[] games)
         {
-            this._userInterFace.ClearGameScreen();
+            int cursorXPosition = 0, cursorYPosition = 0;
+
+            this._output.ClearGameScreen();
             int iterationCounter = 0;
             for (int i = 0; i < 2; i++)
             {                
@@ -28,19 +31,20 @@ namespace GameOfLife
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    this._userInterFace.DrawGameArrayOnScreen(games[i].FirstArray, i + (((i+1) * (i+1) * (i + 1)) *(games[i].FirstArray.GetLength(0))), 0);
-                    games[i].SecondArray = this._generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
-                    
+                    cursorXPosition = i + ((i + 1) * (i + 1) * (i + 1)) * (Generations.GetArraySize(games[i].FirstArray));
+                    this._output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, cursorYPosition);
+                    games[i].SecondArray = this._generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);                   
                 }
                 Thread.Sleep(1000);
                 for (int i = 0; i < 2; i++)
                 {
-                    this._userInterFace.DrawGameArrayOnScreen(games[i].SecondArray, (((i + 1) * (i + 1) * (i + 1)) * (games[i].SecondArray.GetLength(0))), 0);
+                    cursorXPosition = ((i + 1) * (i + 1) * (i + 1)) * (Generations.GetArraySize(games[i].FirstArray));
+                    this._output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, cursorYPosition);
                     games[i].FirstArray = this._generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
                     iterationCounter++;
                 }
                 Thread.Sleep(1000);
-            } while ((!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)));
+            } while (!Input.EscapeKeyWasPressed());
         }
     }
 }

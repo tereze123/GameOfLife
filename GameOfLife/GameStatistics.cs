@@ -9,7 +9,7 @@
 
         public int GetAliveCellCount(int[,] gameArray)
         {
-            int arrayLength = gameArray.GetLength(0);
+            int arrayLength = Generations.GetArraySize(gameArray);
             int aliveCells = 0;
             for (int i = 0; i < arrayLength; i++)
             {

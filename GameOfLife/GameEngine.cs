@@ -2,15 +2,19 @@
 {
     public class GameEngine
     {
-        private static FileOperations fileStore = new FileOperations();
-        private static GameStatistics statistics = new GameStatistics();
-        private static GameLogic gameLogic = new GameLogic();
-        private static UserInterFace userInterFace = new UserInterFace();
-        private static Generations generations = new Generations(gameLogic);
+        private static FileOperations _fileStore = new FileOperations();
+        private static GameStatistics _statistics = new GameStatistics();
+        private static GameLogic _gameLogic = new GameLogic();
+        private static Generations _generations = new Generations(_gameLogic);
+        private static ConsoleManipulations _console = new ConsoleManipulations();
+        private static Output _output = new Output(_generations, _console);
+        private static UserInputValidate _userInputValidate = new UserInputValidate();
+
+        private static Input _input = new Input(_generations, _userInputValidate,_output, _console);
 
          public static void Start()
          {
-            SingleGame game = new SingleGame(statistics, generations, fileStore, userInterFace);
+            SingleGame game = new SingleGame(_statistics, _generations, _fileStore, _output,_input);
             game.StartMenu();
          }
     }   

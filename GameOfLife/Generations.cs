@@ -10,13 +10,13 @@ namespace GameOfLife
         {
             this._gameLogic = gameLogic;
         }
-
+        public static int GetArraySize(int[,] array) => array.GetLength(0);
         public int[,] CreateArray(int arraySize) => new int[arraySize, arraySize];
 
         public void InitializeArray(  int[,] arr)
         {
             Random rand = new Random();
-            int arraySize = arr.GetLength(0);
+            int arraySize = GetArraySize(arr);
 
             for (int i = 0; i < arraySize; i++)
             {
@@ -29,7 +29,7 @@ namespace GameOfLife
 
         public int[,] GetNewGenerationArray(  int[,] firstarr,   int[,] secondArr)
         {
-            var arraySize = firstarr.GetLength(0);
+            var arraySize = GetArraySize(firstarr);
 
             for (int i = 0; i < arraySize; i++)
             {
