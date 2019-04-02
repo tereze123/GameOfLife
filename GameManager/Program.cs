@@ -1,12 +1,10 @@
-﻿using FileOperations;
-using FileOperations.Interfaces;
+﻿using FileOperations.Interfaces;
+using GameEngine.Interfaces;
 using GamePlayManaging;
+using InputAndOutput.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using InputAndOutput.Interfaces;
 using System.IO;
-using GameEngine.Interfaces;
 
 namespace GameOfLife
 {

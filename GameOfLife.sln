@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife", "GameOfLife\GameOfLife.csproj", "{B3A23F99-572B-40C4-953D-6FA18EF9B9A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InputAndOutput", "InputAndOutput\InputAndOutput.csproj", "{25A7301D-2571-4111-A136-92AF10264730}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputAndOutput", "InputAndOutput\InputAndOutput.csproj", "{25A7301D-2571-4111-A136-92AF10264730}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePlayManaging", "GameManager\GamePlayManaging.csproj", "{8451C112-95D6-416E-AFE2-3401DFE05848}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePlayManaging", "GameManager\GamePlayManaging.csproj", "{8451C112-95D6-416E-AFE2-3401DFE05848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEngine", "GameEngine\GameEngine.csproj", "{6DFA1E4D-4CBC-48D5-92BC-9FA9E931A0B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEngine", "GameEngine\GameEngine.csproj", "{6DFA1E4D-4CBC-48D5-92BC-9FA9E931A0B4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOperations", "FileOperations\FileOperations.csproj", "{57C11BD9-5E54-4E5D-991C-FBE828749E98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileOperations", "FileOperations\FileOperations.csproj", "{57C11BD9-5E54-4E5D-991C-FBE828749E98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B3A23F99-572B-40C4-953D-6FA18EF9B9A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3A23F99-572B-40C4-953D-6FA18EF9B9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3A23F99-572B-40C4-953D-6FA18EF9B9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3A23F99-572B-40C4-953D-6FA18EF9B9A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{25A7301D-2571-4111-A136-92AF10264730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{25A7301D-2571-4111-A136-92AF10264730}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25A7301D-2571-4111-A136-92AF10264730}.Release|Any CPU.ActiveCfg = Release|Any CPU

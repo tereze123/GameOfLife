@@ -33,13 +33,43 @@ namespace GamePlayManaging
                 case 2:
                     StartGameFromLoadedFile();
                     break;
-                //case 3:
-                //    MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
-                //    games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
-                //    break;
+                case 3:
+                    MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
+                    games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
+                    break;
             }
         }
 
+        public void PlayMultiGame(params MultipleGames[] games)
+        {
+            int cursorXPosition = 0;
+
+            this._output.ClearGameScreen();
+            int iterationCounter = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                games[i].FirstArray = this._generations.CreateArray(10);
+                games[i].SecondArray = this._generations.CreateArray(10);
+                this._generations.InitializeArray(games[i].FirstArray);
+            }
+            do
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
+                    this._output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
+                    games[i].SecondArray = this._generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
+                }
+                for (int i = 0; i < 9; i++)
+                {
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
+                    this._output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
+                    games[i].FirstArray = this._generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
+                    iterationCounter++;
+                }
+                Thread.Sleep(1000);
+            } while (!Input.EscapeKeyWasPressed());
+        }
         public void SaveGame(int[,] array)
         {
             _fileOperations.WriteTheArrayIntoFile(array);
@@ -67,7 +97,12 @@ namespace GamePlayManaging
             }
         }
 
-        public void PlayGame(int[,] firstArray, int[,] secondArray, int cursorLeft = 1, int cursorTop = 1, int iterationCount = 1)
+        public void PlayGame(
+            int[,] firstArray,
+            int[,] secondArray,
+            int cursorLeft = 1,
+            int cursorTop = 1,
+            int iterationCount = 1)
         {
             int allCellCount;
             int aliveCellCount;
@@ -77,21 +112,26 @@ namespace GamePlayManaging
             do
             {
                 arrayNumberToSave = 1;
-                
-                //allCellCount = _statistics.GetAllCellCount(firstArray);
-                //aliveCellCount = _statistics.GetAliveCellCount(firstArray);
-                //deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
+
+                allCellCount = _gameEngine.GetAllCellCount(firstArray);
+                aliveCellCount = _gameEngine.GetAliveCellCount(firstArray);
+                deadCellCount = _gameEngine.GetDeadCellCount(allCellCount, aliveCellCount);
 
                 _inputAndOutput.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
-                _inputAndOutput.DrawStatistics(arraySize, iterationCount, allCellCount = 1, aliveCellCount = 1, deadCellCount = 1);
+                _inputAndOutput.DrawStatistics(
+                    arraySize,
+                    iterationCount,
+                    allCellCount,
+                    aliveCellCount,
+                    deadCellCount);
 
                 Thread.Sleep(1000);
 
                 secondArray = _gameEngine.GetNewGenerationArray(firstArray, secondArray);
 
-                //allCellCount = _statistics.GetAllCellCount(secondArray);
-                //aliveCellCount = _statistics.GetAliveCellCount(secondArray);
-                //deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
+                allCellCount = _gameEngine.GetAllCellCount(secondArray);
+                aliveCellCount = _gameEngine.GetAliveCellCount(secondArray);
+                deadCellCount = _gameEngine.GetDeadCellCount(allCellCount, aliveCellCount);
 
 
                 iterationCount++;

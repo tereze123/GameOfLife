@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife
 {
-    public class GameStatistics
+    public class GameStatistics : IGameStatistics
     {
         public int GetAllCellCount(int[,] gameArray)
         {

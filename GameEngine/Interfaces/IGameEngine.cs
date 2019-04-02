@@ -1,6 +1,6 @@
 ﻿namespace GameEngine.Interfaces
 {
-    public interface IGameEngine: IGame,IGameField,IGameLogic
+    public interface IGameEngine: IGame,IGameField,IGameLogic,IStatistics
     {
 
     }

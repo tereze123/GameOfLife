@@ -82,6 +82,7 @@ namespace InputAndOutput
         public void DrawGameArrayOnScreen(int[,] arr, int arraySize, int cursorLeft = 0, int cursorTop = 1)
         {
             this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
+            arraySize = arr.GetLength(0);
 
             for (int x = -1; x < arraySize - 1; x++)
             {
@@ -112,11 +113,11 @@ namespace InputAndOutput
         {
             this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
             Console.SetCursorPosition(0, arraySize + 5);
-            Console.WriteLine(
-                $"Iteration number: " + iterationCount + "\n",
-                $"Cell Count: " + cellCount + "\n",
-                $"Alive Cell Count: " + aliveCellCount + "\n",
-                $"Dead Cell Count: " + deadCellCount + "\n");
+
+            Console.WriteLine($"Iteration number: " + iterationCount);
+            Console.WriteLine($"Cell Count: " + cellCount);
+            Console.WriteLine($"Alive Cell Count: " + aliveCellCount);
+            Console.WriteLine($"Dead Cell Count: " + deadCellCount);
         }
 
         public int GetValidFieldSizeFromUser()
