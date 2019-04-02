@@ -1,7 +1,6 @@
-﻿using GameEngine.Interfaces;
-namespace GameEngine
+﻿namespace GameEngine
 {
-    public class Game: IGame
+    public class GameModelState
     {
         public int[,] FirstArray { get; set; }
 

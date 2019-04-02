@@ -19,7 +19,7 @@ namespace FileOperations
             return path;
         }
 
-        public void WriteTheArrayIntoFile(int[,] array)
+        public void SaveGameToFile(int[,] array)
         {
             CreateFolderOnDesktop();
             var arrayLength = array.GetLength(0);
@@ -38,7 +38,7 @@ namespace FileOperations
             }
         }
 
-        public int[,] ReturnSavedArrayFromFile()
+        public int[,] LoadGameFromFile()
         {
             string text;
             int counter = 0;

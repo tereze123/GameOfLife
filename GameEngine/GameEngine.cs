@@ -5,9 +5,15 @@ namespace GameEngine
 {
     public class GameEngine: IGameEngine
     {
+        private readonly GameModelState _gameModelState;
+
         public int[,] FirstArray { get; set; }
 
         public int[,] SecondArray { get; set; }
+        public GameEngine(GameModelState gameModelState)
+        {
+            _gameModelState = gameModelState;
+        }
         private bool ThreeOrTwoAliveNeighbors(int neighbours)
         {
             return (neighbours == 2 || neighbours == 3) ? true : false;

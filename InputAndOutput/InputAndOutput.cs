@@ -79,7 +79,11 @@ namespace InputAndOutput
             Console.Write("===");
         }
 
-        public void DrawGameArrayOnScreen(int[,] arr, int arraySize, int cursorLeft = 0, int cursorTop = 1)
+        public void DrawGameArrayOnScreen(
+            int[,] arr, 
+            int arraySize, 
+            int cursorLeft = 0, 
+            int cursorTop = 1)
         {
             this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
             arraySize = arr.GetLength(0);
@@ -109,7 +113,12 @@ namespace InputAndOutput
             }
         }
 
-        public void DrawStatistics(int arraySize, int iterationCount, int cellCount, int aliveCellCount, int deadCellCount)
+        public void DrawStatistics(
+            int arraySize, 
+            int iterationCount, 
+            int cellCount, 
+            int aliveCellCount, 
+            int deadCellCount)
         {
             this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
             Console.SetCursorPosition(0, arraySize + 5);

@@ -5,17 +5,20 @@ using System;
 using System.Threading;
 using InputAndOutput.Interfaces;
 using GameEngine.Interfaces;
+using GameEngine;
 
 namespace GamePlayManaging
 {
     public class GameManager:IGameManager
     {
+        private readonly GameModelState gameModel;
         private readonly IFileOperations _fileOperations;
         private readonly IInputAndOutput _inputAndOutput;
         private readonly IGameEngine _gameEngine;
 
-        public GameManager(IFileOperations fileOperations, IInputAndOutput inputAndOutput, IGameEngine gameEngine)
+        public GameManager(GameModelState gameModel,IFileOperations fileOperations, IInputAndOutput inputAndOutput, IGameEngine gameEngine)
         {
+            this.gameModel = gameModel;
             _fileOperations = fileOperations;
             _inputAndOutput = inputAndOutput;
             _gameEngine = gameEngine;
@@ -33,46 +36,46 @@ namespace GamePlayManaging
                 case 2:
                     StartGameFromLoadedFile();
                     break;
-                case 3:
-                    MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
-                    games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
-                    break;
+                //case 3:
+                    //MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
+                    //games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
+                    //break;
             }
         }
 
-        public void PlayMultiGame(params MultipleGames[] games)
-        {
-            int cursorXPosition = 0;
+        //public void PlayMultiGame(params MultipleGames[] games)
+        //{
+        //    int cursorXPosition = 0;
 
-            this._output.ClearGameScreen();
-            int iterationCounter = 0;
-            for (int i = 0; i < 2; i++)
-            {
-                games[i].FirstArray = this._generations.CreateArray(10);
-                games[i].SecondArray = this._generations.CreateArray(10);
-                this._generations.InitializeArray(games[i].FirstArray);
-            }
-            do
-            {
-                for (int i = 0; i < 9; i++)
-                {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
-                    this._output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
-                    games[i].SecondArray = this._generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
-                }
-                for (int i = 0; i < 9; i++)
-                {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
-                    this._output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
-                    games[i].FirstArray = this._generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
-                    iterationCounter++;
-                }
-                Thread.Sleep(1000);
-            } while (!Input.EscapeKeyWasPressed());
-        }
+        //    this._output.ClearGameScreen();
+        //    int iterationCounter = 0;
+        //    for (int i = 0; i < 2; i++)
+        //    {
+        //        games[i].FirstArray = this._generations.CreateArray(10);
+        //        games[i].SecondArray = this._generations.CreateArray(10);
+        //        this._generations.InitializeArray(games[i].FirstArray);
+        //    }
+        //    do
+        //    {
+        //        for (int i = 0; i < 9; i++)
+        //        {
+        //            cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
+        //            this._output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
+        //            games[i].SecondArray = this._generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
+        //        }
+        //        for (int i = 0; i < 9; i++)
+        //        {
+        //            cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
+        //            this._output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
+        //            games[i].FirstArray = this._generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
+        //            iterationCounter++;
+        //        }
+        //        Thread.Sleep(1000);
+        //    } while (!Input.EscapeKeyWasPressed());
+        //}
         public void SaveGame(int[,] array)
         {
-            _fileOperations.WriteTheArrayIntoFile(array);
+            _fileOperations.SaveGameToFile(array);
         }
 
         public void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
@@ -154,7 +157,7 @@ namespace GamePlayManaging
 
         public void StartGameFromLoadedFile()
         {
-            int[,] firstArray = _fileOperations.ReturnSavedArrayFromFile();
+            int[,] firstArray = _fileOperations.LoadGameFromFile();
             int arraySize = firstArray.GetLength(0);
             var secondArray = _gameEngine.CreateArray(arraySize);
             _inputAndOutput.ClearScreen();
@@ -164,11 +167,11 @@ namespace GamePlayManaging
         public void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
         {
             int sizeOfField = _inputAndOutput.GetValidFieldSizeFromUser();
-            _gameEngine.FirstArray = _gameEngine.CreateArray(sizeOfField);
-            _gameEngine.SecondArray = _gameEngine.CreateArray(sizeOfField);
-            _gameEngine.InitializeArray(_gameEngine.FirstArray);
+            gameModel.FirstArray = _gameEngine.CreateArray(sizeOfField);
+            gameModel.SecondArray = _gameEngine.CreateArray(sizeOfField);
+            _gameEngine.InitializeArray(gameModel.FirstArray);
             _inputAndOutput.ClearScreen();
-            this.PlayGame(_gameEngine.FirstArray, _gameEngine.SecondArray, cursorLeft, cursorTop);
+            this.PlayGame(gameModel.FirstArray, gameModel.SecondArray, cursorLeft, cursorTop);
         }
 
         public bool IsGamePaused()

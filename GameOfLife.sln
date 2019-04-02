@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InputAndOutput", "InputAndOutput\InputAndOutput.csproj", "{25A7301D-2571-4111-A136-92AF10264730}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePlayManaging", "GameManager\GamePlayManaging.csproj", "{8451C112-95D6-416E-AFE2-3401DFE05848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePlayManager", "GameManager\GamePlayManager.csproj", "{8451C112-95D6-416E-AFE2-3401DFE05848}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEngine", "GameEngine\GameEngine.csproj", "{6DFA1E4D-4CBC-48D5-92BC-9FA9E931A0B4}"
 EndProject
