@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife
 {
-    public class Input
+    public class Input : IInput
     {
         private readonly Generations _generations;
         private readonly UserInputValidate _userInputValidate;

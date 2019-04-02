@@ -8,9 +8,8 @@
         private static Generations _generations = new Generations(_gameLogic);
         private static ConsoleManipulations _console = new ConsoleManipulations();
         private static Output _output = new Output(_generations, _console);
-        private static UserInputValidate _userInputValidate = new UserInputValidate();
 
-        private static Input _input = new Input(_generations, _userInputValidate,_output, _console);
+        private static Input _input = new Input(_generations, new UserInputValidate(),_output, _console);
 
          public static void Start()
          {

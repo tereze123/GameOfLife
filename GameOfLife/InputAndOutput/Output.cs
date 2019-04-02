@@ -1,4 +1,6 @@
-﻿namespace GameOfLife
+﻿using System;
+
+namespace GameOfLife
 {
     public class Output
     {
@@ -26,7 +28,7 @@
 
         private void DrawTopBorder()
         {
-            this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.White);
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             this._console.WriteToConsole("===");
         }
 
@@ -43,14 +45,14 @@
 
         private void AliveCellOutput(int[,] arr, int x, int y)
         {
-            this._console.SetColor(backgroundColor: ColorEnum.White, ForeGroundColor: ColorEnum.White);
-            this._console.WriteToConsole($" " + arr[x + 1, y + 1] + " ");
-            this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.Black);
+            this.SetColor(backgroundColor: ColorEnum.White, foregroundColor: ColorEnum.White);
+            Console.Write($" " + arr[x + 1, y + 1] + " ");
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
         }
 
         private void DeadCellOutput(int[,] arr, int x, int y)
         {
-            this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.Black);
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
             this._console.WriteToConsole($" " + arr[x + 1, y + 1] + " ");
         }
 
@@ -63,10 +65,35 @@
         {
             return (x == -1 || y == -1) ? true : false;
         }
+
+        private bool IsLastColumn(int y, int arraySize)
+        {
+            return (y == arraySize - 2) ? true : false;
+        }
+
+        private bool IsLastRow(int x, int arraySize)
+        {
+            return (x == arraySize - 2) ? true : false;
+        }
+
+        private void DrawRightBorder(int x, int y, int cursorLeft, int cursorTop)
+        {
+            this._console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 1);
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
+            this._console.WriteToConsole("===");
+        }
+
+        private void DrawBottomBorder(int x, int y, int cursorLeft, int cursorTop)
+        {
+            this._console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 2);
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
+            this._console.WriteToConsole("===");
+        }
+
         public void DrawGameArrayOnScreen(int[,] arr, int cursorLeft = 0, int cursorTop = 1)
         {
             int arraySize = Generations.GetArraySize(arr);
-            this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.Black);
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
 
             for (int x = -1; x < arraySize - 1; x++)
             {
@@ -74,43 +101,28 @@
                 {
                     this._console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 1);
 
-                    if (IsTopRow(x, y))
-                    {
-                        this.DrawTopBorder();
-                    }
+                    if (IsTopRow(x, y)) this.DrawTopBorder();
                     else
                     {
-                        if (CellIsAlive(arr,x+1,y+1))
-                        {
-                            this.AliveCellOutput(arr,x,y);
-                        }
-                        else
-                        {
-                            this.DeadCellOutput(arr, x, y);
-                        }
-
-                        if (y == arraySize - 2)
-                        {
-                            this._console.SetCursorPosition(cursorLeft + ((y + 2) * 3) + 3, cursorTop + x + 1);
-                            this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.White);
-                            this._console.WriteToConsole("===");
-                        }
+                        if (CellIsAlive(arr,x,y)) this.AliveCellOutput(arr,x,y);
+                        else this.DeadCellOutput(arr, x, y);
                     }
-
-                    if (x == arraySize - 2)
+                    if (IsLastColumn(y,arraySize))
                     {
-                        this._console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 2);
-                        this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.White);
-                        this._console.WriteToConsole("===");
+                        DrawRightBorder(x, y, cursorLeft, cursorTop);
+                    }
+                    if (IsLastRow(x,arraySize))
+                    {
+                        DrawBottomBorder(x, y, cursorLeft, cursorTop);
                     }
                 }
-                this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.Black);
+                this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
             }
         }
 
         public void DrawStatistics(int arraySize, int iterationCount, int cellCount, int aliveCellCount, int deadCellCount)
         {
-            this._console.SetColor(backgroundColor: ColorEnum.Black, ForeGroundColor: ColorEnum.White);
+            this.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             this._console.SetCursorPosition(0, arraySize + 5);
             this._console.WriteManyLinesToConsole(
                 $"Iteration number: " + iterationCount,
@@ -123,5 +135,7 @@
         {
             _console.ClearGameScreen();
         }
+
+        void SetColor(ColorEnum backgroundColor, ColorEnum foregroundColor) { }
     }
 }

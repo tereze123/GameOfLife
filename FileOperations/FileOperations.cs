@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using FileOperations.Interfaces;
 
-namespace GameOfLife
+namespace FileOperations
 {
-    public class FileOperations
+    public class FileOperations : IFileOperations
     {
         private void CreateFolderOnDesktop()
         {
@@ -18,22 +19,22 @@ namespace GameOfLife
             return path;
         }
 
-        public void WriteTheArrayIntoFile(  int[,] array)
+        public void WriteTheArrayIntoFile(int[,] array)
         {
             CreateFolderOnDesktop();
-            var arrayLength = Generations.GetArraySize(array);
+            var arrayLength = array.GetLength(0);
             var path = Path.Combine(GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
 
             using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(path,false))
+                new System.IO.StreamWriter(path, false))
             {
-                        for (int i = 0; i < arrayLength; i++)
-                        {
-                            for (int j = 0; j < arrayLength; j++)
-                            {
-                                file.Write(array[i, j].ToString());
-                            }
-                        }
+                for (int i = 0; i < arrayLength; i++)
+                {
+                    for (int j = 0; j < arrayLength; j++)
+                    {
+                        file.Write(array[i, j].ToString());
+                    }
+                }
             }
         }
 

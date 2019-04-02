@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace GameOfLife
 {
-    public class SingleGame:Game
+    public class SingleGame : Game, IGameManager
     {
         
         private readonly GameStatistics _statistics;
@@ -13,7 +13,12 @@ namespace GameOfLife
         private readonly Output _output;
 
 
-        public SingleGame(GameStatistics statistics, Generations generations,FileOperations fileStore, Output output, Input input)
+        public SingleGame(
+            GameStatistics statistics, 
+            Generations generations,
+            FileOperations fileStore, 
+            Output output, 
+            Input input)
         {
             this._statistics = statistics;
             this._generations = generations;
@@ -36,17 +41,17 @@ namespace GameOfLife
                     break;
                 case 3:
                     MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
-                    games.PlayMultiGame(new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations())), new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations())));
+                    games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
                     break;
             }
         }
 
-        private void SaveGame(int[,] array)
+        public void SaveGame(int[,] array)
         {
             this._fileStore.WriteTheArrayIntoFile(array);
         }
 
-        private void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
+        public void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
         {
            int continueGame = _input.GetValidUserInputForPausedGame(firstArray);
 
@@ -68,8 +73,7 @@ namespace GameOfLife
             }
         }
 
-
-        private void PlayGame(  int[,] firstArray, int[,] secondArray, int cursorLeft = 1, int cursorTop = 1, int iterationCount = 1)
+        public void PlayGame(  int[,] firstArray, int[,] secondArray, int cursorLeft = 1, int cursorTop = 1, int iterationCount = 1)
         {
             int allCellCount;
             int aliveCellCount;
@@ -114,7 +118,7 @@ namespace GameOfLife
             PauseGame(firstArray, secondArray, arrayNumberToSave);
         }
 
-        private void StartGameFromLoadedFile()
+        public void StartGameFromLoadedFile()
         {
             int[,] firstArray = _fileStore.ReturnSavedArrayFromFile();
             int arraySize = Generations.GetArraySize(firstArray);
@@ -123,14 +127,14 @@ namespace GameOfLife
             PlayGame(firstArray,secondArray);
         }
 
-        private void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
+        public void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
         {
             int sizeOfField = _input.GetValidFieldSizeFromUser();
             FirstArray = _generations.CreateArray(sizeOfField);
             SecondArray = _generations.CreateArray(sizeOfField);
             _generations.InitializeArray(FirstArray);
             _output.ClearGameScreen();
-            PlayGame(FirstArray, SecondArray, cursorLeft, cursorTop);            
+            this.PlayGame(FirstArray, SecondArray, cursorLeft, cursorTop);            
         }
     }
 }

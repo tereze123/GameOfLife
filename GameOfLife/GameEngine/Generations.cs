@@ -2,7 +2,7 @@
 
 namespace GameOfLife
 {
-    public class Generations
+    public class Generations : IGameField
     {
         private readonly GameLogic _gameLogic;
 
@@ -10,8 +10,15 @@ namespace GameOfLife
         {
             this._gameLogic = gameLogic;
         }
-        public static int GetArraySize(int[,] array) => array.GetLength(0);
-        public int[,] CreateArray(int arraySize) => new int[arraySize, arraySize];
+        public static int GetArraySize(int[,] array)
+        {
+            return array.GetLength(0);
+        }
+
+        public int[,] CreateArray(int arraySize)
+        {
+            return new int[arraySize, arraySize];
+        }
 
         public void InitializeArray(  int[,] arr)
         {

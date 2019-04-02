@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife
 {
-    public class UserInputValidate
+    public class UserInputValidate : IValidateUserInput
     {
         public int ParseFromStringToInt(string userInput)
         {
@@ -9,12 +9,12 @@
 
         private bool CanParseToInt(string userInput)
         {
-            int temp;
-            return int.TryParse(userInput,out temp);
+            return int.TryParse(userInput, out int temp);
         }
 
         public bool ValidateStartMenuUserInput(string userInput)
         {
+          //  System.Enum.TryParse
             switch (userInput)
             {
                 case "1":

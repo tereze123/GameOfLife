@@ -58,24 +58,7 @@ namespace GameOfLife
             else return false;
         }
 
-        public void SetColor(ColorEnum backgroundColor, ColorEnum ForeGroundColor)
-        {
-            if (BackgroundBlackAndForeGroundBlack(backgroundColor, ForeGroundColor))
-            {
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Black;
-            }
-            else if (BackgroundBlackAndForegroundWhite(backgroundColor, ForeGroundColor))
-            {
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else if (BackgroundWhiteAndForeGroundWhite(backgroundColor, ForeGroundColor))
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-        }
+
 
         public static bool EscapeWasPressed()
         {
