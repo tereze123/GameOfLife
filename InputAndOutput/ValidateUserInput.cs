@@ -9,11 +9,6 @@ namespace InputAndOutput
             return int.Parse(userInput);
         }
 
-        private bool CanParseToInt(string userInput)
-        {
-            return int.TryParse(userInput, out int temp);
-        }
-
         public bool ValidateStartMenuUserInput(string userInput)
         {
            // System.Enum.TryParse
@@ -42,6 +37,11 @@ namespace InputAndOutput
         public bool ValidateFieldSizeUserInput(string userInputFieldSize)
         {
             return ((CanParseToInt(userInputFieldSize))) ? ValidateFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
+        }
+
+        private bool CanParseToInt(string userInput)
+        {
+            return int.TryParse(userInput, out int temp);
         }
 
         private bool ValidateFieldSizeLessThan50MoreOrEqualTo10(int userInputFieldSize)

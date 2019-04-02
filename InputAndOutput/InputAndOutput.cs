@@ -25,60 +25,6 @@ namespace InputAndOutput
                 Console.ForegroundColor = ConsoleColor.Black;
             }
         }
-
-        private void DrawTopBorder()
-        {
-            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
-            Console.Write("===");
-        }
-
-        private void AliveCellOutput(int[,] arr, int x, int y)
-        {
-            this.SetColor(backgroundColor: ColorEnum.White, foreGroundColor: ColorEnum.White);
-            Console.Write($" " + arr[x + 1, y + 1] + " ");
-            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
-        }
-
-        private void DeadCellOutput(int[,] arr, int x, int y)
-        {
-            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
-            Console.Write($" " + arr[x + 1, y + 1] + " ");
-        }
-
-        private bool CellIsAlive(int[,] arr, int x, int y)
-        {
-            return arr[x + 1, y + 1] == 1 ? true : false;
-        }
-
-        private bool IsTopRow(int x, int y)
-        {
-            return (x == -1 || y == -1) ? true : false;
-        }
-
-        private bool IsLastColumn(int y, int arraySize)
-        {
-            return (y == arraySize - 2) ? true : false;
-        }
-
-        private bool IsLastRow(int x, int arraySize)
-        {
-            return (x == arraySize - 2) ? true : false;
-        }
-
-        private void DrawRightBorder(int x, int y, int cursorLeft, int cursorTop)
-        {
-            Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 1);
-            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
-            Console.Write("===");
-        }
-
-        private void DrawBottomBorder(int x, int y, int cursorLeft, int cursorTop)
-        {
-            Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 2);
-            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
-            Console.Write("===");
-        }
-
         public void DrawGameArrayOnScreen(
             int[,] arr, 
             int arraySize, 
@@ -112,7 +58,6 @@ namespace InputAndOutput
                 this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
             }
         }
-
         public void DrawStatistics(
             int arraySize, 
             int iterationCount, 
@@ -128,7 +73,6 @@ namespace InputAndOutput
             Console.WriteLine($"Alive Cell Count: " + aliveCellCount);
             Console.WriteLine($"Dead Cell Count: " + deadCellCount);
         }
-
         public int GetValidFieldSizeFromUser()
         {
             string userInput = "";
@@ -140,7 +84,6 @@ namespace InputAndOutput
             } while (!(this.ValidateFieldSizeUserInput(userInput)));
             return this.ParseFromStringToInt(userInput);
         }
-
         public int GetValidUserInputForPausedGame(int[,] firstArray)
         {
             string userInput = "";
@@ -152,7 +95,6 @@ namespace InputAndOutput
             } while (!(this.ValdiatePausedGameUserInput(userInput)));
             return this.ParseFromStringToInt(userInput);
         }
-
         public int GetValidUserInputForStartMenu()
         {
             string userInput = "";
@@ -164,24 +106,20 @@ namespace InputAndOutput
             } while (!(this.ValidateStartMenuUserInput(userInput)));
             return this.ParseFromStringToInt(userInput);
         }
-
         public void ClearScreen()
         {
             Console.Clear();
         }
-
         public void TextOutputForFieldSizeInput()
         {
             this.ClearScreen();
             Console.WriteLine("Please set the size of field (10-50)");
         }
-
         public void TextOutputForPausedGame()
         {
             this.ClearScreen();
             Console.WriteLine("Game Paused... Want to Continue / Save / Exit? (1/2/3)");
         }
-
         public void TextOutputForStartMenuInput()
         {
             Console.Clear();
@@ -193,17 +131,10 @@ namespace InputAndOutput
                 "3 Multiple games"
                 );
         }
-
         public int ParseFromStringToInt(string userInput)
         {
             return int.Parse(userInput);
         }
-
-        private bool CanParseToInt(string userInput)
-        {
-            return int.TryParse(userInput, out int temp);
-        }
-
         public bool ValidateStartMenuUserInput(string userInput)
         {
             // System.Enum.TryParse
@@ -216,7 +147,6 @@ namespace InputAndOutput
                 default: return false;
             }
         }
-
         public bool ValdiatePausedGameUserInput(string userInput)
         {
             switch (userInput)
@@ -228,12 +158,60 @@ namespace InputAndOutput
                 default: return false;
             }
         }
-
         public bool ValidateFieldSizeUserInput(string userInputFieldSize)
         {
             return ((CanParseToInt(userInputFieldSize))) ? ValidateFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
         }
 
+
+        private void DeadCellOutput(int[,] arr, int x, int y)
+        {
+            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
+            Console.Write($" " + arr[x + 1, y + 1] + " ");
+        }
+        private bool CellIsAlive(int[,] arr, int x, int y)
+        {
+            return arr[x + 1, y + 1] == 1 ? true : false;
+        }
+        private bool IsTopRow(int x, int y)
+        {
+            return (x == -1 || y == -1) ? true : false;
+        }
+        private bool IsLastColumn(int y, int arraySize)
+        {
+            return (y == arraySize - 2) ? true : false;
+        }
+        private bool IsLastRow(int x, int arraySize)
+        {
+            return (x == arraySize - 2) ? true : false;
+        }
+        private void AliveCellOutput(int[,] arr, int x, int y)
+        {
+            this.SetColor(backgroundColor: ColorEnum.White, foreGroundColor: ColorEnum.White);
+            Console.Write($" " + arr[x + 1, y + 1] + " ");
+            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.Black);
+        }
+        private void DrawTopBorder()
+        {
+            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
+            Console.Write("===");
+        }
+        private void DrawRightBorder(int x, int y, int cursorLeft, int cursorTop)
+        {
+            Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 1);
+            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
+            Console.Write("===");
+        }
+        private bool CanParseToInt(string userInput)
+        {
+            return int.TryParse(userInput, out int temp);
+        }
+        private void DrawBottomBorder(int x, int y, int cursorLeft, int cursorTop)
+        {
+            Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 2);
+            this.SetColor(backgroundColor: ColorEnum.Black, foreGroundColor: ColorEnum.White);
+            Console.Write("===");
+        }
         private bool ValidateFieldSizeLessThan50MoreOrEqualTo10(int userInputFieldSize)
         {
             return (userInputFieldSize < 50 && userInputFieldSize >= 10) ? true : false;

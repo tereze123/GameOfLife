@@ -4,6 +4,22 @@ namespace GameEngine
 {
     public class GameLogic:IGameLogic
     {
+        public bool WillCellSurvive(int[,] arr, int x, int y)
+        {
+            int neighbours = CountNeighbours(arr, x, y);
+
+            int valueOfThis = arr[x, y];
+
+            if (valueOfThis == 1)
+            {
+                return (ThreeOrTwoAliveNeighbors(neighbours)) ? true : false;
+            }
+            else
+            {
+                return (ThreeAliveNeighbours(neighbours)) ? true : false;
+            }
+        }
+
         private bool ThreeOrTwoAliveNeighbors(int neighbours)
         {
             return (neighbours == 2 || neighbours == 3) ? true : false;
@@ -12,7 +28,6 @@ namespace GameEngine
         {
             return (neighbours == 3) ? true : false;
         }
-
         private int CountNeighbours(int[,] arr, int x, int y)
         {
             var arraySize = arr.GetLength(0);
@@ -29,21 +44,6 @@ namespace GameEngine
             sum -= arr[x, y];
 
             return sum;
-        }
-        public bool WillCellSurvive(int[,] arr, int x, int y)
-        {
-            int neighbours = CountNeighbours(arr, x, y);
-
-            int valueOfThis = arr[x, y];
-
-            if (valueOfThis == 1)
-            {
-                return (ThreeOrTwoAliveNeighbors(neighbours)) ? true : false;
-            }
-            else
-            {
-                return (ThreeAliveNeighbours(neighbours)) ? true : false;
-            }
         }
     }
 }

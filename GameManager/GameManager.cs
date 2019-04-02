@@ -6,6 +6,7 @@ using System.Threading;
 using InputAndOutput.Interfaces;
 using GameEngine.Interfaces;
 using GameEngine;
+using GamePlayManager.Enums;
 
 namespace GamePlayManaging
 {
@@ -26,17 +27,18 @@ namespace GamePlayManaging
 
         public void StartMenu()
         {
-            int usersChoice = _inputAndOutput.GetValidUserInputForStartMenu();
+            var usersChoice = (StartMenuEnum)(_inputAndOutput.GetValidUserInputForStartMenu());
+
             switch (usersChoice)
             {
-                case 1:
+                case StartMenuEnum.StartNewGame:
                     StartNewGame();
                     break;
 
-                case 2:
+                case StartMenuEnum.StartGameFromLoadedFile:
                     StartGameFromLoadedFile();
                     break;
-                //case 3:
+                    //case StartMenuEnum.StartMultipleGames:
                     //MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
                     //games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
                     //break;
@@ -80,19 +82,19 @@ namespace GamePlayManaging
 
         public void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
         {
-            int continueGame = _inputAndOutput.GetValidUserInputForPausedGame(firstArray);
+            var userChoice = (PausedGameMenuEnum)(_inputAndOutput.GetValidUserInputForPausedGame(firstArray));
 
-            switch (continueGame)
+            switch (userChoice)
             {
-                case 1:
+                case PausedGameMenuEnum.ContinueGame:
                     _inputAndOutput.ClearScreen();
                     PlayGame(firstArray, secondArray);
                     break;
-                case 2:
+                case PausedGameMenuEnum.SaveGame:
                     if (currentArray == 1) SaveGame(firstArray);
                     else SaveGame(secondArray);
                     break;
-                case 3:
+                case PausedGameMenuEnum.ExitTheGame:
                     Environment.Exit(0);
                     return;
                 default:

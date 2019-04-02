@@ -25,13 +25,11 @@ namespace InputAndOutput
         public void TextOutputForStartMenuInput()
         {
             Console.Clear();
-            Console.WriteLine(
-                "------------------WELCOME TO THE GAME OF LIFE------------------------------",
-                "Please Choose Your Next Action:",
-                "1 Start New Game",
-                "2 Load Game From File",
-                "3 Multiple games"
-                );
+            Console.WriteLine("------------------WELCOME TO THE GAME OF LIFE------------------------------");
+            Console.WriteLine("Please Choose Your Next Action:");
+            Console.WriteLine("1 Start New Game");
+            Console.WriteLine("2 Load Game From File");
+            Console.WriteLine("3 Multiple games");               
         }
     }
 }

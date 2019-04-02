@@ -61,15 +61,15 @@ namespace GameEngine
             return new int[arraySize, arraySize];
         }
 
-        public int[,] GetNewGenerationArray(int[,] firstarr, int[,] secondArr)
+        public int[,] GetNewGenerationArray(int[,] firstArr, int[,] secondArr)
         {
-            var arraySize = firstarr.GetLength(0);
+            var arraySize = firstArr.GetLength(0);
 
             for (int i = 0; i < arraySize; i++)
             {
                 for (int j = 0; j < arraySize; j++)
                 {
-                    if (this.WillCellSurvive(firstarr, i, j))
+                    if (this.WillCellSurvive(firstArr, i, j))
                     {
                         secondArr[i, j] = 1;
                     }

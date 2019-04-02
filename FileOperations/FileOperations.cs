@@ -7,18 +7,6 @@ namespace FileOperations
 {
     public class FileOperations : IFileOperations
     {
-        private void CreateFolderOnDesktop()
-        {
-            var folder = Path.Combine(GetPath(), "TESTA FOLDERIS");
-            Directory.CreateDirectory(folder);
-        }
-
-        private string GetPath()
-        {
-            var path = "C:\\Users\\tereze.elize.empele\\Desktop\\";
-            return path;
-        }
-
         public void SaveGameToFile(int[,] array)
         {
             CreateFolderOnDesktop();
@@ -66,6 +54,18 @@ namespace FileOperations
                 }
             }
             return array;
+        }
+
+        private void CreateFolderOnDesktop()
+        {
+            var folder = Path.Combine(GetPath(), "TESTA FOLDERIS");
+            Directory.CreateDirectory(folder);
+        }
+
+        private string GetPath()
+        {
+            var path = "C:\\Users\\tereze.elize.empele\\Desktop\\";
+            return path;
         }
     }
 }
