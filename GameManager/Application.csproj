@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FileOperations\FileOperations.csproj" />
-    <ProjectReference Include="..\GameEngine\GameEngine.csproj" />
+    <ProjectReference Include="..\GameEngine\Domain.csproj" />
     <ProjectReference Include="..\InputAndOutput\Presentation.csproj" />
   </ItemGroup>
 
