@@ -1,12 +1,11 @@
-﻿using GamePlayManaging.Interfaces;
-using InputAndOutput;
-using FileOperations.Interfaces;
+﻿using FileOperations.Interfaces;
+using GameEngine;
+using GameEngine.Interfaces;
+using GamePlayManager.Enums;
+using GamePlayManaging.Interfaces;
+using InputAndOutput.Interfaces;
 using System;
 using System.Threading;
-using InputAndOutput.Interfaces;
-using GameEngine.Interfaces;
-using GameEngine;
-using GamePlayManager.Enums;
 
 namespace GamePlayManaging
 {
@@ -14,15 +13,37 @@ namespace GamePlayManaging
     {
         private readonly GameModelState _gameModel;
         private readonly IFileOperations _fileOperations;
-        private readonly IInputAndOutput _inputAndOutput;
-        private readonly IGameEngine _gameEngine;
+        private readonly IColorOfOutput _colorOfOutput;
+        private readonly IDrawField _drawField;
+        private readonly IInput _input;
+        private readonly IOutputText _outputText;
+        private readonly IValidateUserInput _validateUserInput;
+        private readonly IGameField _gameField;
+        private readonly IGameLogic _gameLogic;
+        private readonly IStatistics _statistics;
 
-        public GameManager(IFileOperations fileOperations, IInputAndOutput inputAndOutput, IGameEngine gameEngine)
+        public GameManager(
+            IFileOperations fileOperations,
+            IColorOfOutput colorOfOutput, 
+            IDrawField drawField, 
+            IInput input, 
+            IOutputText outputText, 
+            IValidateUserInput validateUserInput,
+            IGameField gameField,
+            IGameLogic gameLogic,
+            IStatistics statistics
+            )
         {
             _gameModel = new GameModelState();
             _fileOperations = fileOperations;
-            _inputAndOutput = inputAndOutput;
-            _gameEngine = gameEngine;
+            _colorOfOutput = colorOfOutput;
+            _drawField = drawField;
+            _input = input;
+            _outputText = outputText;
+            _validateUserInput = validateUserInput;
+            _gameField = gameField;
+            _gameLogic = gameLogic;
+            _statistics = statistics;
         }
 
 
@@ -31,27 +52,27 @@ namespace GamePlayManaging
         //{
         //    int cursorXPosition = 0;
 
-        //    this._output.ClearGameScreen();
+        //    __output.ClearGameScreen();
         //    int iterationCounter = 0;
         //    for (int i = 0; i < 2; i++)
         //    {
-        //        games[i].FirstArray = this._generations.CreateArray(10);
-        //        games[i].SecondArray = this._generations.CreateArray(10);
-        //        this._generations.InitializeArray(games[i].FirstArray);
+        //        games[i].FirstArray = __generations.CreateArray(10);
+        //        games[i].SecondArray = __generations.CreateArray(10);
+        //        __generations.InitializeArray(games[i].FirstArray);
         //    }
         //    do
         //    {
         //        for (int i = 0; i < 9; i++)
         //        {
         //            cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
-        //            this._output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
-        //            games[i].SecondArray = this._generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
+        //            __output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
+        //            games[i].SecondArray = __generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
         //        }
         //        for (int i = 0; i < 9; i++)
         //        {
         //            cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
-        //            this._output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
-        //            games[i].FirstArray = this._generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
+        //            __output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
+        //            games[i].FirstArray = __generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
         //            iterationCounter++;
         //        }
         //        Thread.Sleep(1000);
@@ -62,19 +83,19 @@ namespace GamePlayManaging
             _fileOperations.SaveGameToFile(array);
         }
 
-        public void PauseGame(int[,] firstArray, int[,] secondArray, int currentArray)
+        public void PauseGame(int[,] initialArray, int[,] nextGenerationArray, int currentArray)
         {
-            var userChoice = (PausedGameMenuEnum)(_inputAndOutput.GetValidUserInputForPausedGame(firstArray));
+            var userChoice = (PausedGameMenuEnum)(_input.GetValidUserInputForPausedGame(initialArray));
 
             switch (userChoice)
             {
                 case PausedGameMenuEnum.ContinueGame:
-                    _inputAndOutput.ClearScreen();
-                    PlayGame(firstArray, secondArray);
+                    _outputText.ClearScreen();
+                    PlayGame(initialArray, nextGenerationArray);
                     break;
                 case PausedGameMenuEnum.SaveGame:
-                    if (currentArray == 1) SaveGame(firstArray);
-                    else SaveGame(secondArray);
+                    if (currentArray == 1) SaveGame(initialArray);
+                    else SaveGame(nextGenerationArray);
                     break;
                 case PausedGameMenuEnum.ExitTheGame:
                     Environment.Exit(0);
@@ -85,8 +106,8 @@ namespace GamePlayManaging
         }
 
         public void PlayGame(
-            int[,] firstArray,
-            int[,] secondArray,
+            int[,] initialArray,
+            int[,] nextGenerationArray,
             int cursorLeft = 1,
             int cursorTop = 1,
             int iterationCount = 1)
@@ -94,18 +115,18 @@ namespace GamePlayManaging
             int allCellCount;
             int aliveCellCount;
             int deadCellCount;
-            int arraySize = firstArray.GetLength(0);
+            int arraySize = initialArray.GetLength(0);
             int arrayNumberToSave = 0;
             do
             {
                 arrayNumberToSave = 1;
 
-                allCellCount = _gameEngine.GetAllCellCount(firstArray);
-                aliveCellCount = _gameEngine.GetAliveCellCount(firstArray);
-                deadCellCount = _gameEngine.GetDeadCellCount(allCellCount, aliveCellCount);
+                allCellCount = _statistics.GetAllCellCount(initialArray);
+                aliveCellCount = _statistics.GetAliveCellCount(initialArray);
+                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
-                _inputAndOutput.DrawGameArrayOnScreen(firstArray, cursorLeft, cursorTop);
-                _inputAndOutput.DrawStatistics(
+                _drawField.DrawGameArrayOnScreen(initialArray, cursorLeft, cursorTop);
+                _drawField.DrawStatistics(
                     arraySize,
                     iterationCount,
                     allCellCount,
@@ -114,47 +135,47 @@ namespace GamePlayManaging
 
                 Thread.Sleep(1000);
 
-                secondArray = _gameEngine.GetNewGenerationArray(firstArray, secondArray);
+                nextGenerationArray = _gameField.GetNewGenerationArray(initialArray, nextGenerationArray);
 
-                allCellCount = _gameEngine.GetAllCellCount(secondArray);
-                aliveCellCount = _gameEngine.GetAliveCellCount(secondArray);
-                deadCellCount = _gameEngine.GetDeadCellCount(allCellCount, aliveCellCount);
+                allCellCount = _statistics.GetAllCellCount(nextGenerationArray);
+                aliveCellCount = _statistics.GetAliveCellCount(nextGenerationArray);
+                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
 
                 iterationCount++;
 
-                _inputAndOutput.DrawGameArrayOnScreen(secondArray, cursorLeft, cursorTop);
-                _inputAndOutput.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
+                _drawField.DrawGameArrayOnScreen(nextGenerationArray, cursorLeft, cursorTop);
+                _drawField.DrawStatistics(arraySize, iterationCount, allCellCount, aliveCellCount, deadCellCount);
 
                 Thread.Sleep(1000);
 
                 arrayNumberToSave = 2;
 
-                firstArray = _gameEngine.GetNewGenerationArray(secondArray, firstArray);
+                initialArray = _gameField.GetNewGenerationArray(nextGenerationArray, initialArray);
 
                 iterationCount++;
 
             } while (!IsGamePaused());
 
-            PauseGame(firstArray, secondArray, arrayNumberToSave);
+            PauseGame(initialArray, nextGenerationArray, arrayNumberToSave);
         }
 
         public void StartGameFromLoadedFile()
         {
-            int[,] firstArray = _fileOperations.LoadGameFromFile();
-            int arraySize = firstArray.GetLength(0);
-            var secondArray = _gameEngine.CreateArray(arraySize);
-            _inputAndOutput.ClearScreen();
-            PlayGame(firstArray, secondArray);
+            int[,] initialArray = _fileOperations.LoadGameFromFile();
+            int arraySize = initialArray.GetLength(0);
+            var nextGenerationArray = _gameField.CreateArray(arraySize);
+            _outputText.ClearScreen();
+            PlayGame(initialArray, nextGenerationArray);
         }
 
         public void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
         {
-            int sizeOfField = _inputAndOutput.GetValidFieldSizeFromUser();
-            _gameModel.FirstArray = _gameEngine.CreateArray(sizeOfField);
-            _gameModel.SecondArray = _gameEngine.CreateArray(sizeOfField);
-            _gameEngine.InitializeArray(_gameModel.FirstArray);
-            _inputAndOutput.ClearScreen();
+            int sizeOfField = _input.GetValidFieldSizeFromUser();
+            _gameModel.FirstArray = _gameField.CreateArray(sizeOfField);
+            _gameModel.SecondArray = _gameField.CreateArray(sizeOfField);
+            _gameField.InitializeArray(_gameModel.FirstArray);
+            _outputText.ClearScreen();
             this.PlayGame(_gameModel.FirstArray, _gameModel.SecondArray, cursorLeft, cursorTop);
         }
 
@@ -169,7 +190,7 @@ namespace GamePlayManaging
 
         public void StartMenu()
         {
-            var usersChoice = (StartMenuEnum)(_inputAndOutput.GetValidUserInputForStartMenu());
+            var usersChoice = (StartMenuEnum)(_input.GetValidUserInputForStartMenu());
 
             switch (usersChoice)
             {

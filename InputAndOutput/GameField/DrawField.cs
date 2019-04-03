@@ -40,7 +40,12 @@ namespace InputAndOutput
                 _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
             }
         }
-        public void DrawStatistics(int arraySize, int iterationCount, int cellCount, int aliveCellCount, int deadCellCount)
+        public void DrawStatistics(
+            int arraySize, 
+            int iterationCount, 
+            int cellCount, 
+            int aliveCellCount, 
+            int deadCellCount)
         {
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.SetCursorPosition(0, arraySize + 5);

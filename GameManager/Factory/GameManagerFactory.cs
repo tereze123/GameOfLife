@@ -17,6 +17,7 @@ namespace GamePlayManager.Factory
             var fileOperations = serviceProvider.GetService<IFileOperations>();
             var inputAndOutput = serviceProvider.GetService<IInputAndOutput>();
             var gameEngine = serviceProvider.GetService<IGameEngine>();
+            var colorOfOutput = serviceProvider.
 
             return new GameManager(fileOperations, inputAndOutput, gameEngine);
         }

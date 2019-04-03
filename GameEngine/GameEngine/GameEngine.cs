@@ -31,25 +31,18 @@ namespace GameEngine
         {
             return new int[arraySize, arraySize];
         }
-        public int[,] GetNewGenerationArray(int[,] firstArr, int[,] secondArr)
+        public int[,] GetNewGenerationArray(int[,] initialArray, int[,] nextGenerationArray)
         {
-            var arraySize = firstArr.GetLength(0);
+            var arraySize = initialArray.GetLength(0);
 
             for (int i = 0; i < arraySize; i++)
             {
                 for (int j = 0; j < arraySize; j++)
                 {
-                    if (this.WillCellSurvive(firstArr, i, j))
-                    {
-                        secondArr[i, j] = 1;
-                    }
-                    else
-                    {
-                        secondArr[i, j] = 0;
-                    }
+                    SetCellStatusForNextGeneration(ref initialArray, ref nextGenerationArray, i, j);
                 }
             }
-            return secondArr;
+            return nextGenerationArray;
         }
         public void InitializeArray(int[,] arr)
         {
@@ -64,31 +57,20 @@ namespace GameEngine
                 }
             }
         }
-        public int GetAllCellCount(int[,] gameArray)
-        {
-            return gameArray.Length;
-        }
-        public int GetAliveCellCount(int[,] gameArray)
-        {
-            int arrayLength = gameArray.GetLength(0);
-            int aliveCells = 0;
-            for (int i = 0; i < arrayLength; i++)
-            {
-                for (int j = 0; j < arrayLength; j++)
-                {
-                    if (gameArray[i, j] == 1)
-                    {
-                        aliveCells += 1;
-                    }
-                }
-            }
-            return aliveCells;
-        }
-        public int GetDeadCellCount(int allCellCount, int aliveCellCount)
-        {
-            return allCellCount - aliveCellCount;
-        }
 
+
+
+        private void SetCellStatusForNextGeneration(ref int[,] initialArray, ref int[,] nextGenerationArray, int i, int j)
+        {
+            if (this.WillCellSurvive(initialArray, i, j))
+            {
+                nextGenerationArray[i, j] = 1;
+            }
+            else
+            {
+                nextGenerationArray[i, j] = 0;
+            }
+        }
         private bool ThreeOrTwoAliveNeighbors(int neighbours)
         {
             return (neighbours == 2 || neighbours == 3) ? true : false;
