@@ -56,24 +56,24 @@ namespace Application
             int iterationCounter = 0;
             for (int i = 0; i < gameCount; i++)
             {
-                games[i].FirstArray = _gameField.CreateArray(10);
-                games[i].SecondArray = _gameField.CreateArray(10);
-                _gameField.InitializeArray(games[i].FirstArray);
+                games[i].InitialArray = _gameField.CreateArray(10);
+                games[i].NextGenerationArray = _gameField.CreateArray(10);
+                _gameField.InitializeArray(games[i].InitialArray);
             }
             do
             {
                 for (int i = 0; i < gameCount; i++)
                 {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].FirstArray.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (games[i].FirstArray.GetLength(0)));
-                    games[i].SecondArray = _gameField.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].InitialArray.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[i].InitialArray, cursorXPosition, (i / 2) * (games[i].InitialArray.GetLength(0)));
+                    games[i].NextGenerationArray = _gameField.GetNewGenerationArray(games[i].InitialArray, games[i].NextGenerationArray);
                 }
                 Thread.Sleep(1000);
                 for (int i = 0; i < gameCount; i++)
                 {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].FirstArray.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (games[i].FirstArray.GetLength(0)));
-                    games[i].FirstArray = _gameField.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].InitialArray.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[i].NextGenerationArray, cursorXPosition, (i / 2) * (games[i].InitialArray.GetLength(0)));
+                    games[i].InitialArray = _gameField.GetNewGenerationArray(games[i].NextGenerationArray, games[i].InitialArray);
                     iterationCounter++;
                 }
                 Thread.Sleep(1000);
@@ -170,14 +170,14 @@ namespace Application
             PlayGame(initialArray, nextGenerationArray);
         }
 
-        public void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
+        public void StartNewGame()
         {
             int sizeOfField = _input.GetValidFieldSizeFromUser();
-            _gameModel.FirstArray = _gameField.CreateArray(sizeOfField);
-            _gameModel.SecondArray = _gameField.CreateArray(sizeOfField);
-            _gameField.InitializeArray(_gameModel.FirstArray);
+            _gameModel.InitialArray = _gameField.CreateArray(sizeOfField);
+            _gameModel.NextGenerationArray = _gameField.CreateArray(sizeOfField);
+            _gameField.InitializeArray(_gameModel.InitialArray);
             _outputText.ClearScreen();
-            this.PlayGame(_gameModel.FirstArray, _gameModel.SecondArray, cursorLeft, cursorTop);
+            this.PlayGame(_gameModel.InitialArray, _gameModel.NextGenerationArray);
         }
 
         public void Start()
@@ -203,11 +203,8 @@ namespace Application
                     StartGameFromLoadedFile();
                     break;
                 case StartMenuEnum.StartMultipleGames:
-                    var gameList = GameListFactory.GetGameList(8);
+                    var gameList = GameListFactory.GetGameList(1000);
                     PlayMultiGame(gameList.Count,gameList);
-
-
-
                     break;
             }
         }

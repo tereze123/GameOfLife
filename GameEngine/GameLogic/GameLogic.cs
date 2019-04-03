@@ -4,7 +4,7 @@ namespace Domain
 {
     public class GameLogic:IGameLogic
     {
-        public bool WillCellSurvive(bool[,] arr, int x, int y)
+        public bool CellStatusInNextGeneration(bool[,] arr, int x, int y)
         {
             int neighbours = CountNeighbours(arr, x, y);
 

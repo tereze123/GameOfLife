@@ -25,14 +25,7 @@ namespace Domain
             {
                 for (int j = 0; j < arraySize; j++)
                 {
-                    if (_gameLogic.WillCellSurvive(initialArray, i, j))
-                    {
-                        nextGenerationArray[i, j] = true;
-                    }
-                    else
-                    {
-                        nextGenerationArray[i, j] = false;
-                    }
+                    nextGenerationArray[i, j] = _gameLogic.CellStatusInNextGeneration(initialArray, i, j);
                 }
             }
             return nextGenerationArray;

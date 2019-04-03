@@ -91,12 +91,18 @@ namespace Presentation
         }
         private void DrawRightBorder(int x, int y, int cursorLeft, int cursorTop)
         {
+            if (cursorLeft < 0 || cursorTop < 0 || cursorLeft > Console.BufferWidth)
+                throw new IndexOutOfRangeException();
+
             Console.SetCursorPosition(cursorLeft + ((y + 2) * 2), cursorTop + x + 1);
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
         }
         private void DrawBottomBorder(int x, int y, int cursorLeft, int cursorTop)
         {
+            if (cursorLeft < 0 || cursorTop < 0 || cursorLeft > Console.BufferWidth)
+                throw new IndexOutOfRangeException();
+
             Console.SetCursorPosition(cursorLeft + ((y + 2) * 2), cursorTop + x + 2);
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
