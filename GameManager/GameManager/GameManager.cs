@@ -12,38 +12,20 @@ namespace GamePlayManaging
 {
     public class GameManager:IGameManager
     {
-        private readonly GameModelState gameModel;
+        private readonly GameModelState _gameModel;
         private readonly IFileOperations _fileOperations;
         private readonly IInputAndOutput _inputAndOutput;
         private readonly IGameEngine _gameEngine;
 
-        public GameManager(GameModelState gameModel,IFileOperations fileOperations, IInputAndOutput inputAndOutput, IGameEngine gameEngine)
+        public GameManager(IFileOperations fileOperations, IInputAndOutput inputAndOutput, IGameEngine gameEngine)
         {
-            this.gameModel = gameModel;
+            _gameModel = new GameModelState();
             _fileOperations = fileOperations;
             _inputAndOutput = inputAndOutput;
             _gameEngine = gameEngine;
         }
 
-        public void StartMenu()
-        {
-            var usersChoice = (StartMenuEnum)(_inputAndOutput.GetValidUserInputForStartMenu());
 
-            switch (usersChoice)
-            {
-                case StartMenuEnum.StartNewGame:
-                    StartNewGame();
-                    break;
-
-                case StartMenuEnum.StartGameFromLoadedFile:
-                    StartGameFromLoadedFile();
-                    break;
-                    //case StartMenuEnum.StartMultipleGames:
-                    //MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
-                    //games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
-                    //break;
-            }
-        }
 
         //public void PlayMultiGame(params MultipleGames[] games)
         //{
@@ -169,16 +151,40 @@ namespace GamePlayManaging
         public void StartNewGame(int cursorLeft = 0, int cursorTop = 0)
         {
             int sizeOfField = _inputAndOutput.GetValidFieldSizeFromUser();
-            gameModel.FirstArray = _gameEngine.CreateArray(sizeOfField);
-            gameModel.SecondArray = _gameEngine.CreateArray(sizeOfField);
-            _gameEngine.InitializeArray(gameModel.FirstArray);
+            _gameModel.FirstArray = _gameEngine.CreateArray(sizeOfField);
+            _gameModel.SecondArray = _gameEngine.CreateArray(sizeOfField);
+            _gameEngine.InitializeArray(_gameModel.FirstArray);
             _inputAndOutput.ClearScreen();
-            this.PlayGame(gameModel.FirstArray, gameModel.SecondArray, cursorLeft, cursorTop);
+            this.PlayGame(_gameModel.FirstArray, _gameModel.SecondArray, cursorLeft, cursorTop);
         }
 
+        public void Start()
+        {
+            this.StartMenu();
+        }
         public bool IsGamePaused()
         {
             return (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
+        }
+
+        public void StartMenu()
+        {
+            var usersChoice = (StartMenuEnum)(_inputAndOutput.GetValidUserInputForStartMenu());
+
+            switch (usersChoice)
+            {
+                case StartMenuEnum.StartNewGame:
+                    StartNewGame();
+                    break;
+
+                case StartMenuEnum.StartGameFromLoadedFile:
+                    StartGameFromLoadedFile();
+                    break;
+                    //case StartMenuEnum.StartMultipleGames:
+                    //MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
+                    //games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
+                    //break;
+            }
         }
     }
 }

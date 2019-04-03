@@ -1,9 +1,5 @@
-﻿using FileOperations.Interfaces;
-using GameEngine;
-using GameEngine.Interfaces;
+﻿using GamePlayManager.Factory;
 using GamePlayManaging;
-using InputAndOutput.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GameOfLife
 {
@@ -11,20 +7,8 @@ namespace GameOfLife
     {               
         static void Main(string[] args)
         {
-
-            var serviceProvider = new ServiceCollection()
-            .AddTransient<IFileOperations, FileOperations.FileOperations>()
-            .AddTransient<IInputAndOutput, InputAndOutput.InputAndOutput>()
-            .AddTransient<IGameEngine, GameEngine.GameEngine>()
-            .BuildServiceProvider();
-
-            var fileOperations = serviceProvider.GetService<IFileOperations>();
-            var inputAndOutput = serviceProvider.GetService<IInputAndOutput>();
-            var gameEngine = serviceProvider.GetService<IGameEngine>();
-
-            GameManager gameManager = new GameManager(new GameModelState(),fileOperations, inputAndOutput, gameEngine);
-
-            gameManager.StartMenu();
+            GameManager gameManager = GameManagerFactory.CreateGameManager();
+            gameManager.Start();
         }
     }
 }
