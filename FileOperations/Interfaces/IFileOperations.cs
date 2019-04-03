@@ -2,7 +2,7 @@
 {
     public interface IFileOperations
     {
-        int[,] LoadGameFromFile();
-        void SaveGameToFile(int[,] array);
+        bool[,] LoadGameFromFile();
+        void SaveGameToFile(bool[,] array);
     }
 }

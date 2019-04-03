@@ -1,4 +1,6 @@
-﻿using Presentation.Interfaces;
+﻿
+using Application.Enums;
+using Presentation.Interfaces;
 
 namespace Presentation
 {
@@ -11,12 +13,13 @@ namespace Presentation
 
         public bool ValidateStartMenuUserInput(string userInput)
         {
-           // System.Enum.TryParse
-            switch (userInput)
+            if (!CanParseToInt(userInput)) return false;
+            var input = (StartMenuEnum)(ParseFromStringToInt(userInput));
+            switch (input)
             {
-                case "1":
-                case "2":
-                case "3":
+                case StartMenuEnum.StartNewGame:
+                case StartMenuEnum.StartGameFromLoadedFile:
+                case StartMenuEnum.StartMultipleGames:
                     return true;
                 default: return false;
             }
@@ -24,11 +27,14 @@ namespace Presentation
 
         public bool ValdiatePausedGameUserInput(string userInput)
         {
-            switch (userInput)
+            if (!CanParseToInt(userInput)) return false;
+            var userChoice = (PausedGameMenuEnum)(ParseFromStringToInt(userInput));
+
+            switch (userChoice)
             {
-                case "1":
-                case "2":
-                case "3":
+                case PausedGameMenuEnum.ContinueGame:
+                case PausedGameMenuEnum.SaveGame:
+                case PausedGameMenuEnum.ExitTheGame:
                     return true;
                 default: return false;
             }

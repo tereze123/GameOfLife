@@ -1,9 +1,8 @@
-﻿using FileOperations.Interfaces;
+﻿using Application.AppStart;
 using Domain.Interfaces;
-using Application.AppStart;
-using Application;
-using Presentation.Interfaces;
+using FileOperations.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Presentation.Interfaces;
 namespace Application.Factory
 {
     public class GameManagerFactory

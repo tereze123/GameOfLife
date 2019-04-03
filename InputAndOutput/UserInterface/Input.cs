@@ -26,7 +26,7 @@ namespace Presentation
             return _validateUserInput.ParseFromStringToInt(userInput);
         }
 
-        public int GetValidUserInputForPausedGame(int[,] firstArray)
+        public int GetValidUserInputForPausedGame(bool[,] initialArray)
         {
             string userInput = "";
             do

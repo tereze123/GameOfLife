@@ -2,8 +2,8 @@
 {
     public interface IStatistics
     {
-            int GetAliveCellCount(int[,] gameArray);
-            int GetAllCellCount(int[,] gameArray);
+            int GetAliveCellCount(bool[,] gameArray);
+            int GetAllCellCount(bool[,] gameArray);
             int GetDeadCellCount(int allCellCount, int aliveCellCount);       
     }
 }

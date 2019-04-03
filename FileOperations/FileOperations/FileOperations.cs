@@ -7,9 +7,10 @@ namespace FileOperations
 {
     public class FileOperations : IFileOperations
     {
-        public void SaveGameToFile(int[,] array)
+        public void SaveGameToFile(bool[,] array)
         {
             CreateFolderOnDesktop();
+            int value;
             var arrayLength = array.GetLength(0);
             var path = Path.Combine(GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
 
@@ -20,13 +21,14 @@ namespace FileOperations
                 {
                     for (int j = 0; j < arrayLength; j++)
                     {
-                        file.Write(array[i, j].ToString());
+                        value = (array[i, j] == true) ? 1 : 0;
+                        file.Write(value.ToString());
                     }
                 }
             }
         }
 
-        public int[,] LoadGameFromFile()
+        public bool[,] LoadGameFromFile()
         {
             string text;
             int counter = 0;
@@ -35,7 +37,7 @@ namespace FileOperations
 
             var arraySize = (int)Math.Sqrt(text.Count());
 
-            int[,] array = new int[arraySize, arraySize];
+            bool[,] array = new bool[arraySize, arraySize];
 
             for (int i = 0; i < arraySize; i++)
             {
@@ -44,11 +46,11 @@ namespace FileOperations
                     int integer = (text[counter]);
                     if (integer == 49)
                     {
-                        array[i, j] = 1;
+                        array[i, j] = true;
                     }
                     else
                     {
-                        array[i, j] = 0;
+                        array[i, j] = false;
                     }
                     counter++;
                 }

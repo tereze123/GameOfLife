@@ -2,8 +2,8 @@
 {
     public class GameModelState
     {
-        public int[,] FirstArray { get; set; }
+        public bool[,] FirstArray { get; set; }
 
-        public int[,] SecondArray { get; set; }
+        public bool[,] SecondArray { get; set; }
     }
 }

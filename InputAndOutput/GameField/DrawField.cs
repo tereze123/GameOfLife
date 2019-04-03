@@ -12,8 +12,9 @@ namespace Presentation
         {
             _colorOfOutput = colorOfOutput;
         }
-        public void DrawGameArrayOnScreen(int[,] arr, int cursorLeft = 0, int cursorTop = 1)
+        public void DrawGameArrayOnScreen(bool[,] arr, int cursorLeft = 0, int cursorTop = 1)
         {
+            Console.CursorVisible = false;
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
             var arraySize = arr.GetLength(0);
 
@@ -21,7 +22,7 @@ namespace Presentation
             {
                 for (int y = -1; y < arraySize - 1; y++)
                 {
-                    Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 1);
+                    Console.SetCursorPosition(cursorLeft + ((y + 2) * 2), cursorTop + x + 1);
 
                     if (IsTopRow(x, y)) this.DrawTopBorder();
                     else
@@ -61,20 +62,20 @@ namespace Presentation
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
         }
-        private void AliveCellOutput(int[,] arr, int x, int y)
+        private void AliveCellOutput(bool[,] arr, int x, int y)
         {
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.White, foregroundColor: ColorEnum.White);
-            Console.Write($" " + arr[x + 1, y + 1] + " ");
+            Console.Write($"  ");
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
         }
-        private void DeadCellOutput(int[,] arr, int x, int y)
+        private void DeadCellOutput(bool[,] arr, int x, int y)
         {
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
-            Console.Write($" " + arr[x + 1, y + 1] + " ");
+            Console.Write($"  ");
         }
-        private bool CellIsAlive(int[,] arr, int x, int y)
+        private bool CellIsAlive(bool[,] arr, int x, int y)
         {
-            return arr[x + 1, y + 1] == 1 ? true : false;
+            return arr[x + 1, y + 1] == true ? true : false;
         }
         private bool IsTopRow(int x, int y)
         {
@@ -90,13 +91,13 @@ namespace Presentation
         }
         private void DrawRightBorder(int x, int y, int cursorLeft, int cursorTop)
         {
-            Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 1);
+            Console.SetCursorPosition(cursorLeft + ((y + 2) * 2), cursorTop + x + 1);
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
         }
         private void DrawBottomBorder(int x, int y, int cursorLeft, int cursorTop)
         {
-            Console.SetCursorPosition(cursorLeft + ((y + 2) * 3), cursorTop + x + 2);
+            Console.SetCursorPosition(cursorLeft + ((y + 2) * 2), cursorTop + x + 2);
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
         }

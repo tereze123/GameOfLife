@@ -79,12 +79,12 @@ namespace Application
                 Thread.Sleep(1000);
             } while (!this.IsGamePaused());
         }
-        public void SaveGame(int[,] array)
+        public void SaveGame(bool[,] array)
         {
             _fileOperations.SaveGameToFile(array);
         }
 
-        public void PauseGame(int[,] initialArray, int[,] nextGenerationArray, int currentArray)
+        public void PauseGame(bool[,] initialArray, bool[,] nextGenerationArray, int currentArray)
         {
             var userChoice = (PausedGameMenuEnum)(_input.GetValidUserInputForPausedGame(initialArray));
 
@@ -107,8 +107,8 @@ namespace Application
         }
 
         public void PlayGame(
-            int[,] initialArray,
-            int[,] nextGenerationArray,
+            bool[,] initialArray,
+            bool[,] nextGenerationArray,
             int cursorLeft = 1,
             int cursorTop = 1,
             int iterationCount = 1)
@@ -163,7 +163,7 @@ namespace Application
 
         public void StartGameFromLoadedFile()
         {
-            int[,] initialArray = _fileOperations.LoadGameFromFile();
+            bool[,] initialArray = _fileOperations.LoadGameFromFile();
             int arraySize = initialArray.GetLength(0);
             var nextGenerationArray = _gameField.CreateArray(arraySize);
             _outputText.ClearScreen();

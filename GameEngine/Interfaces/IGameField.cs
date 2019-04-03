@@ -2,8 +2,8 @@
 {
     public interface IGameField
     {
-        int[,] CreateArray(int arraySize);
-        int[,] GetNewGenerationArray(int[,] initialArray, int[,] nextGenerationArray);
-        void InitializeArray(int[,] arr);
+        bool[,] CreateArray(int arraySize);
+        bool[,] GetNewGenerationArray(bool[,] initialArray, bool[,] nextGenerationArray);
+        void InitializeArray(bool[,] arr);
     }
 }

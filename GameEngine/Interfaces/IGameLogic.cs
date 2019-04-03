@@ -2,6 +2,6 @@
 {
     public interface IGameLogic
     {
-        bool WillCellSurvive(int[,] arr, int x, int y);
+        bool WillCellSurvive(bool[,] arr, int x, int y);
     }
 }

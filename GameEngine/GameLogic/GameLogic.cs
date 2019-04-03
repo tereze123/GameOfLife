@@ -4,13 +4,13 @@ namespace Domain
 {
     public class GameLogic:IGameLogic
     {
-        public bool WillCellSurvive(int[,] arr, int x, int y)
+        public bool WillCellSurvive(bool[,] arr, int x, int y)
         {
             int neighbours = CountNeighbours(arr, x, y);
 
-            int valueOfThis = arr[x, y];
+            bool valueOfThis = arr[x, y];
 
-            if (valueOfThis == 1)
+            if (valueOfThis == true)
             {
                 return (ThreeOrTwoAliveNeighbors(neighbours)) ? true : false;
             }
@@ -28,7 +28,7 @@ namespace Domain
         {
             return (neighbours == 3) ? true : false;
         }
-        private int CountNeighbours(int[,] arr, int x, int y)
+        private int CountNeighbours(bool[,] arr, int x, int y)
         {
             var arraySize = arr.GetLength(0);
             int sum = 0;
@@ -38,10 +38,10 @@ namespace Domain
                 {
                     var row = (i + x + arraySize) % arraySize;
                     var col = (j + y + arraySize) % arraySize;
-                    sum += arr[row, col];
+                    sum += (arr[row, col] == true) ? 1 : 0;
                 }
             }
-            sum -= arr[x, y];
+            sum -= (arr[x, y] == true) ? 1 : 0;
 
             return sum;
         }

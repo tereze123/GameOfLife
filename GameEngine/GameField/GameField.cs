@@ -12,12 +12,12 @@ namespace Domain
             _gameLogic = gameLogic;
         }
 
-        public int[,] CreateArray(int arraySize)
+        public bool[,] CreateArray(int arraySize)
         {
-            return new int[arraySize, arraySize];
+            return new bool[arraySize, arraySize];
         }
 
-        public int[,] GetNewGenerationArray(int[,] initialArray, int[,] nextGenerationArray)
+        public bool[,] GetNewGenerationArray(bool[,] initialArray, bool[,] nextGenerationArray)
         {
             var arraySize = initialArray.GetLength(0);
 
@@ -27,18 +27,18 @@ namespace Domain
                 {
                     if (_gameLogic.WillCellSurvive(initialArray, i, j))
                     {
-                        nextGenerationArray[i, j] = 1;
+                        nextGenerationArray[i, j] = true;
                     }
                     else
                     {
-                        nextGenerationArray[i, j] = 0;
+                        nextGenerationArray[i, j] = false;
                     }
                 }
             }
             return nextGenerationArray;
         }
 
-        public void InitializeArray(int[,] arr)
+        public void InitializeArray(bool[,] arr)
         {
             Random rand = new Random();
             int arraySize = arr.GetLength(0);
@@ -47,7 +47,7 @@ namespace Domain
             {
                 for (int j = 0; j < arraySize; j++)
                 {
-                    arr[i, j] = rand.Next(0, 2);
+                    arr[i, j] = (rand.Next(0, 2) == 1) ? true : false;
                 }
             }
         }

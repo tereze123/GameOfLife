@@ -4,11 +4,11 @@ namespace Domain.Statistics
 {
     public class Statistics :IStatistics
     {
-        public int GetAllCellCount(int[,] gameArray)
+        public int GetAllCellCount(bool[,] gameArray)
         {
             return gameArray.Length;
         }
-        public int GetAliveCellCount(int[,] gameArray)
+        public int GetAliveCellCount(bool[,] gameArray)
         {
             int arrayLength = gameArray.GetLength(0);
             int aliveCells = 0;
@@ -16,7 +16,7 @@ namespace Domain.Statistics
             {
                 for (int j = 0; j < arrayLength; j++)
                 {
-                    if (gameArray[i, j] == 1)
+                    if (gameArray[i, j] == true)
                     {
                         aliveCells += 1;
                     }
