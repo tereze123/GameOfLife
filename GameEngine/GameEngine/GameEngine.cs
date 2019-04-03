@@ -6,39 +6,11 @@ namespace GameEngine
     public class GameEngine: IGameEngine
     {
         private readonly GameModelState _gameModelState;
-
         public int[,] FirstArray { get; set; }
-
         public int[,] SecondArray { get; set; }
         public GameEngine(GameModelState gameModelState)
         {
             _gameModelState = gameModelState;
-        }
-        private bool ThreeOrTwoAliveNeighbors(int neighbours)
-        {
-            return (neighbours == 2 || neighbours == 3) ? true : false;
-        }
-        private bool ThreeAliveNeighbours(int neighbours)
-        {
-            return (neighbours == 3) ? true : false;
-        }
-
-        private int CountNeighbours(int[,] arr, int x, int y)
-        {
-            var arraySize = arr.GetLength(0);
-            int sum = 0;
-            for (int i = -1; i < 2; i++)
-            {
-                for (int j = -1; j < 2; j++)
-                {
-                    var row = (i + x + arraySize) % arraySize;
-                    var col = (j + y + arraySize) % arraySize;
-                    sum += arr[row, col];
-                }
-            }
-            sum -= arr[x, y];
-
-            return sum;
         }
         public bool WillCellSurvive(int[,] arr, int x, int y)
         {
@@ -55,12 +27,10 @@ namespace GameEngine
                 return (ThreeAliveNeighbours(neighbours)) ? true : false;
             }
         }
-
         public int[,] CreateArray(int arraySize)
         {
             return new int[arraySize, arraySize];
         }
-
         public int[,] GetNewGenerationArray(int[,] firstArr, int[,] secondArr)
         {
             var arraySize = firstArr.GetLength(0);
@@ -81,7 +51,6 @@ namespace GameEngine
             }
             return secondArr;
         }
-
         public void InitializeArray(int[,] arr)
         {
             Random rand = new Random();
@@ -95,13 +64,10 @@ namespace GameEngine
                 }
             }
         }
-
-
         public int GetAllCellCount(int[,] gameArray)
         {
             return gameArray.Length;
         }
-
         public int GetAliveCellCount(int[,] gameArray)
         {
             int arrayLength = gameArray.GetLength(0);
@@ -118,10 +84,35 @@ namespace GameEngine
             }
             return aliveCells;
         }
-
         public int GetDeadCellCount(int allCellCount, int aliveCellCount)
         {
             return allCellCount - aliveCellCount;
+        }
+
+        private bool ThreeOrTwoAliveNeighbors(int neighbours)
+        {
+            return (neighbours == 2 || neighbours == 3) ? true : false;
+        }
+        private int CountNeighbours(int[,] arr, int x, int y)
+        {
+            var arraySize = arr.GetLength(0);
+            int sum = 0;
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    var row = (i + x + arraySize) % arraySize;
+                    var col = (j + y + arraySize) % arraySize;
+                    sum += arr[row, col];
+                }
+            }
+            sum -= arr[x, y];
+
+            return sum;
+        }
+        private bool ThreeAliveNeighbours(int neighbours)
+        {
+            return (neighbours == 3) ? true : false;
         }
     }
 }
