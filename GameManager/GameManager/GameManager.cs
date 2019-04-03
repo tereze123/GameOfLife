@@ -1,10 +1,12 @@
-﻿using FileOperations.Interfaces;
+﻿using Domain.Factory;
+using FileOperations.Interfaces;
 using GameEngine;
 using GameEngine.Interfaces;
 using GamePlayManager.Enums;
 using GamePlayManaging.Interfaces;
 using InputAndOutput.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace GamePlayManaging
@@ -46,38 +48,37 @@ namespace GamePlayManaging
             _statistics = statistics;
         }
 
+        public void PlayMultiGame(int gameCount, List<GameModelState> games)
+        {
+            int cursorXPosition = 0;
 
-
-        //public void PlayMultiGame(params MultipleGames[] games)
-        //{
-        //    int cursorXPosition = 0;
-
-        //    __output.ClearGameScreen();
-        //    int iterationCounter = 0;
-        //    for (int i = 0; i < 2; i++)
-        //    {
-        //        games[i].FirstArray = __generations.CreateArray(10);
-        //        games[i].SecondArray = __generations.CreateArray(10);
-        //        __generations.InitializeArray(games[i].FirstArray);
-        //    }
-        //    do
-        //    {
-        //        for (int i = 0; i < 9; i++)
-        //        {
-        //            cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
-        //            __output.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
-        //            games[i].SecondArray = __generations.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
-        //        }
-        //        for (int i = 0; i < 9; i++)
-        //        {
-        //            cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (Generations.GetArraySize(games[i].FirstArray));
-        //            __output.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (Generations.GetArraySize(games[i].FirstArray)));
-        //            games[i].FirstArray = __generations.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
-        //            iterationCounter++;
-        //        }
-        //        Thread.Sleep(1000);
-        //    } while (!Input.EscapeKeyWasPressed());
-        //}
+            _outputText.ClearScreen();
+            int iterationCounter = 0;
+            for (int i = 0; i < gameCount; i++)
+            {
+                games[i].FirstArray = _gameField.CreateArray(10);
+                games[i].SecondArray = _gameField.CreateArray(10);
+                _gameField.InitializeArray(games[i].FirstArray);
+            }
+            do
+            {
+                for (int i = 0; i < gameCount; i++)
+                {
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].FirstArray.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[i].FirstArray, cursorXPosition, (i / 2) * (games[i].FirstArray.GetLength(0)));
+                    games[i].SecondArray = _gameField.GetNewGenerationArray(games[i].FirstArray, games[i].SecondArray);
+                }
+                Thread.Sleep(1000);
+                for (int i = 0; i < gameCount; i++)
+                {
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].FirstArray.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[i].SecondArray, cursorXPosition, (i / 2) * (games[i].FirstArray.GetLength(0)));
+                    games[i].FirstArray = _gameField.GetNewGenerationArray(games[i].SecondArray, games[i].FirstArray);
+                    iterationCounter++;
+                }
+                Thread.Sleep(1000);
+            } while (!this.IsGamePaused());
+        }
         public void SaveGame(int[,] array)
         {
             _fileOperations.SaveGameToFile(array);
@@ -201,10 +202,13 @@ namespace GamePlayManaging
                 case StartMenuEnum.StartGameFromLoadedFile:
                     StartGameFromLoadedFile();
                     break;
-                    //case StartMenuEnum.StartMultipleGames:
-                    //MultipleGames games = new MultipleGames(_generations, new Output(_generations, new ConsoleManipulations()));
-                    //games.PlayMultiGame(games, games, games, games, games, games, games, games, games);
-                    //break;
+                case StartMenuEnum.StartMultipleGames:
+                    var gameList = GameListFactory.GetGameList(8);
+                    PlayMultiGame(gameList.Count,gameList);
+
+
+
+                    break;
             }
         }
     }
