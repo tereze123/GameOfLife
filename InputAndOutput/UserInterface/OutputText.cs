@@ -1,7 +1,7 @@
 ﻿using System;
-using InputAndOutput.Interfaces;
+using Presentation.Interfaces;
 
-namespace InputAndOutput
+namespace Presentation
 {
     public class OutputText : IOutputText
     {

@@ -1,4 +1,4 @@
-﻿namespace InputAndOutput.Enums
+﻿namespace Presentation.Enums
 {
     public enum ColorEnum
     {

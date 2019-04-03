@@ -1,14 +1,10 @@
-﻿using GamePlayManager.Factory;
-using GamePlayManaging;
-
-namespace GameOfLife
+﻿namespace Application.AppStart
 {
     public class Program
     {               
         static void Main(string[] args)
         {
-            GameManager gameManager = GameManagerFactory.CreateGameManager();
-            gameManager.Start();
+            GameStart.StartGame();
         }
     }
 }

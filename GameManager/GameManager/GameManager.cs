@@ -1,15 +1,15 @@
 ﻿using Domain.Factory;
 using FileOperations.Interfaces;
-using GameEngine;
-using GameEngine.Interfaces;
-using GamePlayManager.Enums;
-using GamePlayManaging.Interfaces;
-using InputAndOutput.Interfaces;
+using Domain;
+using Domain.Interfaces;
+using Application.Enums;
+using Application.Interfaces;
+using Presentation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace GamePlayManaging
+namespace Application
 {
     public class GameManager:IGameManager
     {

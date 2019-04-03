@@ -1,8 +1,8 @@
-﻿using InputAndOutput.Interfaces;
-using InputAndOutput.Enums;
+﻿using Presentation.Interfaces;
+using Presentation.Enums;
 using System;
 
-namespace InputAndOutput
+namespace Presentation
 {
     public class DrawField : IDrawField
     {

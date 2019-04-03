@@ -1,6 +1,6 @@
-﻿using GameEngine.Interfaces;
+﻿using Domain.Interfaces;
 
-namespace GameEngine
+namespace Domain
 {
     public class GameLogic:IGameLogic
     {

@@ -1,9 +1,9 @@
 ﻿using FileOperations.Interfaces;
-using GameEngine.Interfaces;
-using InputAndOutput.Interfaces;
+using Domain.Interfaces;
+using Presentation.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GamePlayManager.AppStart
+namespace Application.AppStart
 {
     public class Service
     {
@@ -11,14 +11,14 @@ namespace GamePlayManager.AppStart
         {
         var serviceProvider = new ServiceCollection()
         .AddTransient<IFileOperations, FileOperations.FileOperations>()
-        .AddTransient<IGameField, GameEngine.GameField>()
-        .AddTransient<IGameLogic, GameEngine.GameLogic>()
-        .AddTransient<IStatistics, GameEngine.Statistics.Statistics>()
-        .AddTransient<IColorOfOutput,InputAndOutput.ColorOfOutput>()
-        .AddTransient<IDrawField, InputAndOutput.DrawField>()
-        .AddTransient<IInput, InputAndOutput.Input>()
-        .AddTransient<IOutputText,InputAndOutput.OutputText>()
-        .AddTransient<IValidateUserInput, InputAndOutput.ValidateUserInput>()
+        .AddTransient<IGameField, Domain.GameField>()
+        .AddTransient<IGameLogic, Domain.GameLogic>()
+        .AddTransient<IStatistics, Domain.Statistics.Statistics>()
+        .AddTransient<IColorOfOutput,Presentation.ColorOfOutput>()
+        .AddTransient<IDrawField, Presentation.DrawField>()
+        .AddTransient<IInput, Presentation.Input>()
+        .AddTransient<IOutputText,Presentation.OutputText>()
+        .AddTransient<IValidateUserInput, Presentation.ValidateUserInput>()
         .BuildServiceProvider();
             return serviceProvider;
         }

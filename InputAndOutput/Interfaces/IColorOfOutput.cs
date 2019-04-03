@@ -1,6 +1,6 @@
-﻿using InputAndOutput.Enums;
+﻿using Presentation.Enums;
 
-namespace InputAndOutput.Interfaces
+namespace Presentation.Interfaces
 {
     public interface IColorOfOutput
     {

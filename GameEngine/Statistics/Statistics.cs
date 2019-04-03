@@ -1,6 +1,6 @@
-﻿using GameEngine.Interfaces;
+﻿using Domain.Interfaces;
 
-namespace GameEngine.Statistics
+namespace Domain.Statistics
 {
     public class Statistics :IStatistics
     {

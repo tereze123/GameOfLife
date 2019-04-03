@@ -1,7 +1,7 @@
-﻿using InputAndOutput.Interfaces;
+﻿using Presentation.Interfaces;
 using System;
 
-namespace InputAndOutput
+namespace Presentation
 {
     public class Input:IInput
     {

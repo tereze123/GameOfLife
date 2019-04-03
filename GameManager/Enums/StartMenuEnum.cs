@@ -1,4 +1,4 @@
-﻿namespace GamePlayManager.Enums
+﻿namespace Application.Enums
 {
     public enum StartMenuEnum
     {

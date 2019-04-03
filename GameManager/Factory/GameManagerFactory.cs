@@ -1,10 +1,10 @@
 ﻿using FileOperations.Interfaces;
-using GameEngine.Interfaces;
-using GamePlayManager.AppStart;
-using GamePlayManaging;
-using InputAndOutput.Interfaces;
+using Domain.Interfaces;
+using Application.AppStart;
+using Application;
+using Presentation.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-namespace GamePlayManager.Factory
+namespace Application.Factory
 {
     public class GameManagerFactory
     {

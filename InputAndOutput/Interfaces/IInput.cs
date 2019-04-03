@@ -1,4 +1,4 @@
-﻿namespace InputAndOutput.Interfaces
+﻿namespace Presentation.Interfaces
 {
     public interface IInput
     {

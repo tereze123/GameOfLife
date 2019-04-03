@@ -1,4 +1,4 @@
-﻿namespace GamePlayManaging.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IGameManager
     {

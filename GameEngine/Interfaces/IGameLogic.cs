@@ -1,4 +1,4 @@
-﻿namespace GameEngine.Interfaces
+﻿namespace Domain.Interfaces
 {
     public interface IGameLogic
     {

@@ -1,4 +1,4 @@
-﻿using GameEngine;
+﻿using Domain;
 
 namespace Domain.Factory
 {
