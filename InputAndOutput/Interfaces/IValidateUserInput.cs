@@ -2,9 +2,8 @@
 {
     public interface IValidateUserInput
     {
-        int ParseFromStringToInt(string userInput);
-        bool ValdiatePausedGameUserInput(string userInput);
-        bool ValidateFieldSizeUserInput(string userInputFieldSize);
-        bool ValidateStartMenuUserInput(string userInput);
+        bool IsPausedGameUserInputValid(string userInput);
+        bool IsFieldSizeUserInputValid(string userInputFieldSize);
+        bool IsStartMenuUserInputValid(string userInput);
     }
 }

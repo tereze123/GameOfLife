@@ -27,7 +27,7 @@ namespace Presentation
                     if (IsTopRow(x, y)) this.DrawTopBorder();
                     else
                     {
-                        if (CellIsAlive(arr, x, y)) this.AliveCellOutput(arr, x, y);
+                        if (arr[x+1,y+1]) this.AliveCellOutput(arr, x, y);
                         else this.DeadCellOutput(arr, x, y);
                     }
                     if (IsLastColumn(y, arraySize))
@@ -73,18 +73,19 @@ namespace Presentation
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
             Console.Write($"  ");
         }
-        private bool CellIsAlive(bool[,] arr, int x, int y)
-        {
-            return arr[x + 1, y + 1] == true ? true : false;
-        }
+
+      
+
         private bool IsTopRow(int x, int y)
         {
             return (x == -1 || y == -1) ? true : false;
         }
+
         private bool IsLastColumn(int y, int arraySize)
         {
             return (y == arraySize - 2) ? true : false;
         }
+
         private bool IsLastRow(int x, int arraySize)
         {
             return (x == arraySize - 2) ? true : false;

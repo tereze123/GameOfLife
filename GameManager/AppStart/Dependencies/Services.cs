@@ -11,13 +11,10 @@ namespace Application.AppStart
         {
         var serviceProvider = new ServiceCollection()
         .AddTransient<IFileOperations, FileOperations.FileOperations>()
-        .AddTransient<IGameField, Domain.GameField>()
-        .AddTransient<IGameLogic, Domain.GameLogic>()
-        .AddTransient<IStatistics, Domain.Statistics.Statistics>()
+        .AddTransient<IInputAndOutput, Presentation.InputAndOutputForConsole>()
         .AddTransient<IColorOfOutput,Presentation.ColorOfOutput>()
         .AddTransient<IDrawField, Presentation.DrawField>()
-        .AddTransient<IInput, Presentation.Input>()
-        .AddTransient<IOutputText,Presentation.OutputText>()
+
         .AddTransient<IValidateUserInput, Presentation.ValidateUserInput>()
         .BuildServiceProvider();
             return serviceProvider;

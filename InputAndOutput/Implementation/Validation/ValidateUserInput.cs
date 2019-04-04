@@ -11,7 +11,7 @@ namespace Presentation
             return int.Parse(userInput);
         }
 
-        public bool ValidateStartMenuUserInput(string userInput)
+        public bool IsStartMenuUserInputValid(string userInput)
         {
             if (!CanParseToInt(userInput)) return false;
             var input = (StartMenuEnum)(ParseFromStringToInt(userInput));
@@ -25,7 +25,7 @@ namespace Presentation
             }
         }
 
-        public bool ValdiatePausedGameUserInput(string userInput)
+        public bool IsPausedGameUserInputValid(string userInput)
         {
             if (!CanParseToInt(userInput)) return false;
             var userChoice = (PausedGameMenuEnum)(ParseFromStringToInt(userInput));
@@ -40,7 +40,7 @@ namespace Presentation
             }
         }
 
-        public bool ValidateFieldSizeUserInput(string userInputFieldSize)
+        public bool IsFieldSizeUserInputValid(string userInputFieldSize)
         {
             return ((CanParseToInt(userInputFieldSize))) ? ValidateFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
         }

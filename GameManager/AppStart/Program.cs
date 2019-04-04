@@ -1,10 +1,13 @@
-﻿namespace Application.AppStart
+﻿using Application.Factory;
+
+namespace Application.AppStart
 {
     public class Program
     {               
         static void Main(string[] args)
         {
-            GameStart.StartGame();
+            GameManager gameManager = GameManagerFactory.CreateGameManager();
+            gameManager.Start();
         }
     }
 }
