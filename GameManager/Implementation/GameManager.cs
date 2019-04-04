@@ -10,6 +10,8 @@ using System.Threading;
 using Domain.Statistics;
 using Application.Interfaces;
 using Application.Implementation;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Application
 {
@@ -46,6 +48,7 @@ namespace Application
             int cursorXPosition = 0;
 
             int iterationCounter = 0;
+
             for (int i = 0; i < gameCount; i++)
             {
                 games[i].GameField = _gameField.CreateArray(10);
@@ -54,21 +57,22 @@ namespace Application
             }
             do
             {
+                Thread.Sleep(1000);
+               
+                var result = Parallel.ForEach(games, (g) =>
+                 {
+                   
+                     g.GameField = _gameField.GetNewGenerationArray(g.GameField);
+                     
+                 });
+
+                var idk = games.ToArray();
                 for (int i = 0; i < gameCount; i++)
                 {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].GameField.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].GameField, cursorXPosition, (i / 2) * (games[i].GameField.GetLength(0)));
-                    games[i].GameField = _gameField.GetNewGenerationArray(games[i].GameField);
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (idk[i].GameField.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(idk[i].GameField, cursorXPosition, (i / 2) * (idk[i].GameField.GetLength(0)));
                 }
-                Thread.Sleep(1000);
-                for (int i = 0; i < gameCount; i++)
-                {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].GameField.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].GameField, cursorXPosition, (i / 2) * (games[i].GameField.GetLength(0)));
-                    games[i].GameField = _gameField.GetNewGenerationArray(games[i].GameField);
-                    iterationCounter++;
-                }
-                Thread.Sleep(1000);
+
             } while (!this.IsGamePaused());
         }
 
@@ -119,17 +123,14 @@ namespace Application
             _loop.PlayGame(_gameModel.GameField);
         }
 
-        public void Start()
-        {
-            this.StartMenu();
-        }
+
 
         public bool IsGamePaused()
         {
             return (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
         }
 
-        public void StartMenu()
+        public void Start()
         {
             GameListFactory factory = new GameListFactory();
             var usersChoice = this.GetValidStartMenuInputFromUser();
@@ -143,7 +144,7 @@ namespace Application
                     break;
                 case StartMenuEnum.StartMultipleGames:
                     var gameList = factory.GetGameList(8);
-                    PlayMultiGame(gameList.Count,gameList);
+                    PlayMultiGame(gameList.Count, gameList);
                     break;
             }
         }

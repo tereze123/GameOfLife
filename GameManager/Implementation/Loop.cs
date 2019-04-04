@@ -8,6 +8,9 @@ namespace Application.Implementation
 {
     public class Loop
     {
+        private bool[,] InitialArray { get; set; }
+
+        private bool[,] NextGenerationArray { get; set; }
         private readonly Statistics _statistics;
         private readonly DrawFieldForConsole _drawField;
         private GameField _gameField;
@@ -22,32 +25,33 @@ namespace Application.Implementation
         {
             return (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
         }
-        private bool[,] InitialArray { get; set; }
 
-        private bool[,] NextGenerationArray { get; set; }
-
-        public bool[,] PlayGame(bool[,] gameField, int cursorLeft = 1, int cursorTop = 1, int iterationCount = 1)
+        public bool[,] PlayGame(bool[,] gameField, int iterationCount = 1)
         {
-            if (IsGamePaused()) return gameField;
+            if (IsGamePaused())
+            {
+                return gameField;
+            }
+
             int allCellCount;
             int aliveCellCount;
             int deadCellCount;
             int arraySize = gameField.GetLength(0);
-            Console.Clear();
 
-                allCellCount = _statistics.GetAllCellCount(gameField);
-                aliveCellCount = _statistics.GetAliveCellCount(gameField);
-                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
 
-                _drawField.DrawGameArrayOnScreen(gameField, cursorLeft, cursorTop);
-                _drawField.DrawStatistics(
-                    arraySize,
-                    iterationCount,
-                    allCellCount,
-                    aliveCellCount,
-                    deadCellCount);
+            allCellCount = _statistics.GetAllCellCount(gameField);
+            aliveCellCount = _statistics.GetAliveCellCount(gameField);
+            deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
+
+            _drawField.DrawGameArrayOnScreen(gameField, cursorLeft, cursorTop);
+            _drawField.DrawStatistics(
+                arraySize,
+                iterationCount,
+                allCellCount,
+                aliveCellCount,
+                deadCellCount);
             iterationCount++;
-                Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             PlayGame(_gameField.GetNewGenerationArray(gameField), cursorLeft, cursorTop, iterationCount);
             return _gameField.GetNewGenerationArray(gameField);

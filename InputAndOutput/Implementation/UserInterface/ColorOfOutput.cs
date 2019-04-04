@@ -16,6 +16,7 @@ namespace Presentation
             {
                 Console.BackgroundColor = ConsoleColor.White;
             }
+
             if (foreGroundColor == ColorEnum.White)
             {
                 Console.ForegroundColor = ConsoleColor.White;

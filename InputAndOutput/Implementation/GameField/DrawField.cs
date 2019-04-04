@@ -49,6 +49,7 @@ namespace Presentation
             int aliveCellCount, 
             int deadCellCount)
         {
+            Console.Clear();
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.SetCursorPosition(0, arraySize + 5);
             Console.WriteLine($"Iteration number: " + iterationCount);
