@@ -17,9 +17,10 @@ namespace Domain
             return new bool[arraySize, arraySize];
         }
 
-        public bool[,] GetNewGenerationArray(bool[,] initialArray, bool[,] nextGenerationArray)
+        public bool[,] GetNewGenerationArray(bool[,] initialArray)
         {
             var arraySize = initialArray.GetLength(0);
+            bool[,] nextGenerationArray = new bool[arraySize, arraySize];
 
             for (int i = 0; i < arraySize; i++)
             {

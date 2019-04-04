@@ -2,7 +2,7 @@
 {
     public class GameModelStateFactory
     {
-        public static GameModelState NewGameModelState()
+        public GameModelState NewGameModelState()
         {
             return new GameModelState();
         }

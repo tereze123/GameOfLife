@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Domain.Statistics;
 using Application.Interfaces;
+using Application.Implementation;
 
 namespace Application
 {
@@ -21,6 +22,7 @@ namespace Application
         private readonly IValidateUserInput _validateUserInput;
         private readonly IGameField _gameField;
         private readonly IStatistics _statistics;
+        private Loop _loop;
 
         public GameManager(
             IDrawField drawField,
@@ -35,6 +37,7 @@ namespace Application
             _validateUserInput = new ValidateUserInput();
             _gameField = new GameField(new GameLogic());
             _statistics = new Statistics();
+            _loop = new Loop();
         }
 
         public void PlayMultiGame(int gameCount, List<GameModelState> games)
@@ -45,24 +48,24 @@ namespace Application
             int iterationCounter = 0;
             for (int i = 0; i < gameCount; i++)
             {
-                games[i].InitialArray = _gameField.CreateArray(10);
-                games[i].NextGenerationArray = _gameField.CreateArray(10);
-                _gameField.InitializeArray(games[i].InitialArray);
+                games[i].GameField = _gameField.CreateArray(10);
+                games[i].GameField = _gameField.CreateArray(10);
+                _gameField.InitializeArray(games[i].GameField);
             }
             do
             {
                 for (int i = 0; i < gameCount; i++)
                 {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].InitialArray.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].InitialArray, cursorXPosition, (i / 2) * (games[i].InitialArray.GetLength(0)));
-                    games[i].NextGenerationArray = _gameField.GetNewGenerationArray(games[i].InitialArray, games[i].NextGenerationArray);
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].GameField.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[i].GameField, cursorXPosition, (i / 2) * (games[i].GameField.GetLength(0)));
+                    games[i].GameField = _gameField.GetNewGenerationArray(games[i].GameField);
                 }
                 Thread.Sleep(1000);
                 for (int i = 0; i < gameCount; i++)
                 {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].InitialArray.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].NextGenerationArray, cursorXPosition, (i / 2) * (games[i].InitialArray.GetLength(0)));
-                    games[i].InitialArray = _gameField.GetNewGenerationArray(games[i].NextGenerationArray, games[i].InitialArray);
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (games[i].GameField.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[i].GameField, cursorXPosition, (i / 2) * (games[i].GameField.GetLength(0)));
+                    games[i].GameField = _gameField.GetNewGenerationArray(games[i].GameField);
                     iterationCounter++;
                 }
                 Thread.Sleep(1000);
@@ -74,17 +77,17 @@ namespace Application
             _fileOperations.SaveGameToFile(array);
         }
 
-        public void PauseGame(bool[,] initialArray, bool[,] nextGenerationArray, int currentArray)
+        public void PauseGame(bool[,] gameArray)
         {
             PausedGameMenuEnum usersChoice = this.GetValidPausedGameInputFromUser();
             switch (usersChoice)
             {
                 case PausedGameMenuEnum.ContinueGame:
-                    PlayGame(initialArray, nextGenerationArray);
+                    this.GamePlay(gameArray);
+                    _loop.PlayGame(gameArray);
                     break;
                 case PausedGameMenuEnum.SaveGame:
-                    if (currentArray == 1) SaveGame(initialArray);
-                    else SaveGame(nextGenerationArray);
+                    SaveGame(gameArray);
                     break;
                 case PausedGameMenuEnum.ExitTheGame:
                     Environment.Exit(0);
@@ -94,65 +97,10 @@ namespace Application
             }
         }
 
-        public void PlayGame(
-            bool[,] initialArray,
-            bool[,] nextGenerationArray,
-            int cursorLeft = 1,
-            int cursorTop = 1,
-            int iterationCount = 1)
+        public void GamePlay(bool[,] gameArray)
         {
-            int allCellCount;
-            int aliveCellCount;
-            int deadCellCount;
-            int arraySize = initialArray.GetLength(0);
-            int arrayNumberToSave = 0;
-            Console.Clear();
-            do
-            {
-                arrayNumberToSave = 1;
-
-                allCellCount = _statistics.GetAllCellCount(initialArray);
-                aliveCellCount = _statistics.GetAliveCellCount(initialArray);
-                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
-
-                _drawField.DrawGameArrayOnScreen(initialArray, cursorLeft, cursorTop);
-                _drawField.DrawStatistics(
-                    arraySize,
-                    iterationCount,
-                    allCellCount,
-                    aliveCellCount,
-                    deadCellCount);
-
-                Thread.Sleep(1000);
-
-                nextGenerationArray = _gameField.GetNewGenerationArray(initialArray, nextGenerationArray);
-
-                allCellCount = _statistics.GetAllCellCount(nextGenerationArray);
-                aliveCellCount = _statistics.GetAliveCellCount(nextGenerationArray);
-                deadCellCount = _statistics.GetDeadCellCount(allCellCount, aliveCellCount);
-
-
-                iterationCount++;
-
-                _drawField.DrawGameArrayOnScreen(nextGenerationArray, cursorLeft, cursorTop);
-                _drawField.DrawStatistics(
-                    arraySize, 
-                    iterationCount, 
-                    allCellCount, 
-                    aliveCellCount, 
-                    deadCellCount);
-
-                Thread.Sleep(1000);
-
-                arrayNumberToSave = 2;
-
-                initialArray = _gameField.GetNewGenerationArray(nextGenerationArray, initialArray);
-
-                iterationCount++;
-
-            } while (!this.IsGamePaused());
-
-            this.PauseGame(initialArray, nextGenerationArray, arrayNumberToSave);
+            _loop.PlayGame(gameArray);
+            this.PauseGame(gameArray);
         }
 
         public void StartGameFromLoadedFile()
@@ -160,16 +108,15 @@ namespace Application
             bool[,] initialArray = _fileOperations.LoadGameFromFile();
             int arraySize = initialArray.GetLength(0);
             var nextGenerationArray = _gameField.CreateArray(arraySize);
-            this.PlayGame(initialArray, nextGenerationArray);
+            _loop.PlayGame(initialArray);
         }
 
         public void StartNewGame()
         {
             int sizeOfField = this.GetValidFieldSizeInputFromUser();
-            _gameModel.InitialArray = _gameField.CreateArray(sizeOfField);
-            _gameModel.NextGenerationArray = _gameField.CreateArray(sizeOfField);
-            _gameField.InitializeArray(_gameModel.InitialArray);
-            this.PlayGame(_gameModel.InitialArray, _gameModel.NextGenerationArray);
+            _gameModel.GameField = _gameField.CreateArray(sizeOfField);
+            _gameField.InitializeArray(_gameModel.GameField);
+            _loop.PlayGame(_gameModel.GameField);
         }
 
         public void Start()
@@ -184,6 +131,7 @@ namespace Application
 
         public void StartMenu()
         {
+            GameListFactory factory = new GameListFactory();
             var usersChoice = this.GetValidStartMenuInputFromUser();
             switch (usersChoice)
             {
@@ -194,7 +142,7 @@ namespace Application
                     StartGameFromLoadedFile();
                     break;
                 case StartMenuEnum.StartMultipleGames:
-                    var gameList = GameListFactory.GetGameList(8);
+                    var gameList = factory.GetGameList(8);
                     PlayMultiGame(gameList.Count,gameList);
                     break;
             }

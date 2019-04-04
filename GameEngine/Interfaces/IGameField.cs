@@ -3,7 +3,7 @@
     public interface IGameField
     {
         bool[,] CreateArray(int arraySize);
-        bool[,] GetNewGenerationArray(bool[,] initialArray, bool[,] nextGenerationArray);
+        bool[,] GetNewGenerationArray(bool[,] initialArray);
         void InitializeArray(bool[,] arr);
     }
 }

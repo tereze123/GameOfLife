@@ -6,7 +6,7 @@ namespace Application.Factory
 {
     public class GameManagerFactory
     {
-        public static GameManager CreateGameManager()
+        public GameManager CreateGameManager()
         {
             Service services = new Service();
             var serviceProvider = services.GetServiceProvider();

@@ -6,7 +6,8 @@ namespace Application.AppStart
     {               
         static void Main(string[] args)
         {
-            GameManager gameManager = GameManagerFactory.CreateGameManager();
+            GameManagerFactory factory = new GameManagerFactory();
+            GameManager gameManager = factory.CreateGameManager();
             gameManager.Start();
         }
     }
