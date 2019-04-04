@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace Domain.Factory
+﻿namespace Domain.Factory
 {
     public class GameModelStateFactory
     {

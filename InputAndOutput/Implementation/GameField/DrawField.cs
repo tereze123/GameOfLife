@@ -4,11 +4,11 @@ using System;
 
 namespace Presentation
 {
-    public class DrawField : IDrawField
+    public class DrawFieldForConsole : IDrawField
     {
         private readonly IColorOfOutput _colorOfOutput;
 
-        public DrawField(IColorOfOutput colorOfOutput)
+        public DrawFieldForConsole(IColorOfOutput colorOfOutput)
         {
             _colorOfOutput = colorOfOutput;
         }
@@ -73,9 +73,7 @@ namespace Presentation
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
             Console.Write($"  ");
         }
-
       
-
         private bool IsTopRow(int x, int y)
         {
             return (x == -1 || y == -1) ? true : false;

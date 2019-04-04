@@ -12,7 +12,7 @@ namespace FileOperations
             CreateFolderOnDesktop();
             int value;
             var arrayLength = array.GetLength(0);
-            var path = Path.Combine(GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
+            var path = Path.Combine(this.GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
 
             using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(path, false))
@@ -32,7 +32,7 @@ namespace FileOperations
         {
             string text;
             int counter = 0;
-            var path = Path.Combine(GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
+            var path = Path.Combine(this.GetPath(), "TESTA FOLDERIS", "SavedGame.txt");
             text = File.ReadAllText(path);
 
             var arraySize = (int)Math.Sqrt(text.Count());
@@ -60,7 +60,7 @@ namespace FileOperations
 
         private void CreateFolderOnDesktop()
         {
-            var folder = Path.Combine(GetPath(), "TESTA FOLDERIS");
+            var folder = Path.Combine(this.GetPath(), "TESTA FOLDERIS");
             Directory.CreateDirectory(folder);
         }
 

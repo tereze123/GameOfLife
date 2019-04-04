@@ -8,6 +8,7 @@ namespace Domain.Statistics
         {
             return gameArray.Length;
         }
+
         public int GetAliveCellCount(bool[,] gameArray)
         {
             int arrayLength = gameArray.GetLength(0);
@@ -24,6 +25,7 @@ namespace Domain.Statistics
             }
             return aliveCells;
         }
+
         public int GetDeadCellCount(int allCellCount, int aliveCellCount)
         {
             return allCellCount - aliveCellCount;

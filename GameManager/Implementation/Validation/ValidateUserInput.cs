@@ -36,7 +36,7 @@ namespace Application
 
         public bool IsFieldSizeUserInputValid(string userInputFieldSize)
         {
-            return ((int.TryParse(userInputFieldSize, out int temp))) ? IsFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
+            return ((int.TryParse(userInputFieldSize, out int temp))) ? this.IsFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
         }
 
         private bool IsFieldSizeLessThan50MoreOrEqualTo10(int userInputFieldSize)

@@ -149,9 +149,9 @@ namespace Application
 
                 iterationCount++;
 
-            } while (!IsGamePaused());
+            } while (!this.IsGamePaused());
 
-            PauseGame(initialArray, nextGenerationArray, arrayNumberToSave);
+            this.PauseGame(initialArray, nextGenerationArray, arrayNumberToSave);
         }
 
         public void StartGameFromLoadedFile()
@@ -159,7 +159,7 @@ namespace Application
             bool[,] initialArray = _fileOperations.LoadGameFromFile();
             int arraySize = initialArray.GetLength(0);
             var nextGenerationArray = _gameField.CreateArray(arraySize);
-            PlayGame(initialArray, nextGenerationArray);
+            this.PlayGame(initialArray, nextGenerationArray);
         }
 
         public void StartNewGame()

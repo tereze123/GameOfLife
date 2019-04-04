@@ -6,17 +6,17 @@ namespace Domain
     {
         public bool CellStatusInNextGeneration(bool[,] arr, int x, int y)
         {
-            int neighbours = CountNeighbours(arr, x, y);
+            int neighbours = this.CountNeighbours(arr, x, y);
 
             bool valueOfThis = arr[x, y];
 
             if (valueOfThis == true)
             {
-                return (ThreeOrTwoAliveNeighbors(neighbours)) ? true : false;
+                return (this.ThreeOrTwoAliveNeighbors(neighbours)) ? true : false;
             }
             else
             {
-                return (ThreeAliveNeighbours(neighbours)) ? true : false;
+                return (this.ThreeAliveNeighbours(neighbours)) ? true : false;
             }
         }
 
@@ -24,10 +24,12 @@ namespace Domain
         {
             return (neighbours == 2 || neighbours == 3) ? true : false;
         }
+
         private bool ThreeAliveNeighbours(int neighbours)
         {
             return (neighbours == 3) ? true : false;
         }
+
         private int CountNeighbours(bool[,] arr, int x, int y)
         {
             var arraySize = arr.GetLength(0);

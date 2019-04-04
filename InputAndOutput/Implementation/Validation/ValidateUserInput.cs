@@ -1,20 +1,14 @@
-﻿
-using Application.Enums;
+﻿using Application.Enums;
 using Presentation.Interfaces;
 
 namespace Presentation
 {
     public class ValidateUserInput:IValidateUserInput
     {
-        public int ParseFromStringToInt(string userInput)
-        {
-            return int.Parse(userInput);
-        }
-
         public bool IsStartMenuUserInputValid(string userInput)
         {
-            if (!CanParseToInt(userInput)) return false;
-            var input = (StartMenuEnum)(ParseFromStringToInt(userInput));
+            if (!int.TryParse(userInput, out int temp)) return false;
+            var input = (StartMenuEnum)(int.Parse(userInput));
             switch (input)
             {
                 case StartMenuEnum.StartNewGame:
@@ -27,8 +21,8 @@ namespace Presentation
 
         public bool IsPausedGameUserInputValid(string userInput)
         {
-            if (!CanParseToInt(userInput)) return false;
-            var userChoice = (PausedGameMenuEnum)(ParseFromStringToInt(userInput));
+            if (!int.TryParse(userInput, out int temp)) return false;
+            var userChoice = (PausedGameMenuEnum)(int.Parse(userInput));
 
             switch (userChoice)
             {
@@ -42,12 +36,7 @@ namespace Presentation
 
         public bool IsFieldSizeUserInputValid(string userInputFieldSize)
         {
-            return ((CanParseToInt(userInputFieldSize))) ? ValidateFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
-        }
-
-        private bool CanParseToInt(string userInput)
-        {
-            return int.TryParse(userInput, out int temp);
+            return ((int.TryParse(userInputFieldSize, out int temp))) ? this.ValidateFieldSizeLessThan50MoreOrEqualTo10(int.Parse(userInputFieldSize)) : false;
         }
 
         private bool ValidateFieldSizeLessThan50MoreOrEqualTo10(int userInputFieldSize)
