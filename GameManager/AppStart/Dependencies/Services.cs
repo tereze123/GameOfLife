@@ -1,4 +1,5 @@
 ﻿using FileOperations.Interfaces;
+using Application.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Presentation.Interfaces;
 
@@ -13,8 +14,7 @@ namespace Application.AppStart
         .AddTransient<IInputAndOutput, Presentation.InputAndOutputForConsole>()
         .AddTransient<IColorOfOutput,Presentation.ColorOfOutput>()
         .AddTransient<IDrawField, Presentation.DrawFieldForConsole>()
-
-        .AddTransient<IValidateUserInput, Presentation.ValidateUserInput>()
+        .AddTransient<IValidateUserInput, Application.ValidateUserInput>()
         .BuildServiceProvider();
             return serviceProvider;
         }

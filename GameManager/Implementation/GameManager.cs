@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Domain.Statistics;
+using Application.Interfaces;
 
 namespace Application
 {

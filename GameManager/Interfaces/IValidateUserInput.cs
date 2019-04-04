@@ -1,4 +1,4 @@
-﻿namespace Presentation.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IValidateUserInput
     {

@@ -1,9 +1,8 @@
 ﻿using Application.Enums;
-using Presentation.Interfaces;
 
 namespace Application
 {
-    public class ValidateUserInput:IValidateUserInput
+    public class ValidateUserInput: Interfaces.IValidateUserInput
     {
         public bool IsStartMenuUserInputValid(string userInput)
         {
