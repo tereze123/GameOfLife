@@ -68,7 +68,7 @@ namespace Application
             }
         }
 
-        public void PauseGame(List<GameModelState> gameList)
+        public void PauseGame(List<GameModelState> gameList, List<int> selectedGames)
         {
             PausedGameMenuEnum usersChoice = this.GetValidPausedGameInputFromUser();
             switch (usersChoice)
@@ -137,14 +137,14 @@ namespace Application
             var fullGameList = factory.GetGameList(1000);
             var selectedGameNumberList = GetSelectedGameNumberList();
             _loop.PlayMultiGame(8, fullGameList, selectedGameNumberList);
-            this.PauseGame(fullGameList);
+            this.PauseGame(fullGameList, selectedGameNumberList);
         }
 
         private void PlayMultipleGames(List<GameModelState> fullGameList)
         {
             var selectedGameNumberList = GetSelectedGameNumberList();
             _loop.PlayMultiGame(8, fullGameList, selectedGameNumberList);
-           // this.PauseGame(fullGameList,selectedGameNumberList);
+            this.PauseGame(fullGameList,selectedGameNumberList);
         }
 
         private List<int> GetSelectedGameNumberList()

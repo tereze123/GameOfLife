@@ -94,9 +94,9 @@ namespace Application.Implementation
 
                 for (int i = 0; i < visibleGameCount; i++)
                 {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1)) * (games[i].GameField.GetLength(0));
-                    cursorYPosition = (i / 2) * (games[i].GameField.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(games[i].GameField, cursorXPosition, cursorYPosition);
+                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1)) * (games[selectedGames[i]].GameField.GetLength(0));
+                    cursorYPosition = (i / 2) * (games[selectedGames[i]].GameField.GetLength(0));
+                    _drawField.DrawGameArrayOnScreen(games[selectedGames[i]].GameField, cursorXPosition, cursorYPosition);
                 }
 
                 iterationCounter++;
