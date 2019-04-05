@@ -1,17 +1,14 @@
-﻿using Domain.Factory;
-using FileOperations.Interfaces;
+﻿using Application.Enums;
+using Application.Implementation;
+using Application.Interfaces;
 using Domain;
+using Domain.Factory;
 using Domain.Interfaces;
-using Application.Enums;
+using Domain.Statistics;
+using FileOperations.Interfaces;
 using Presentation.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using Domain.Statistics;
-using Application.Interfaces;
-using Application.Implementation;
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -24,7 +21,7 @@ namespace Application
         private readonly IValidateUserInput _validateUserInput;
         private readonly IGameField _gameField;
         private readonly IStatistics _statistics;
-        private Loop _loop;
+        private GameLoop _loop;
 
         public GameManager(
             IDrawField drawField,
@@ -39,46 +36,17 @@ namespace Application
             _validateUserInput = new ValidateUserInput();
             _gameField = new GameField(new GameLogic());
             _statistics = new Statistics();
-            _loop = new Loop();
-        }
-
-        public void PlayMultiGame(int gameCount, List<GameModelState> games)
-        {
-            Console.Clear();
-            int cursorXPosition = 0;
-
-            int iterationCounter = 0;
-
-            for (int i = 0; i < gameCount; i++)
-            {
-                games[i].GameField = _gameField.CreateArray(10);
-                games[i].GameField = _gameField.CreateArray(10);
-                _gameField.InitializeArray(games[i].GameField);
-            }
-            do
-            {
-                Thread.Sleep(1000);
-               
-                var result = Parallel.ForEach(games, (g) =>
-                 {
-                   
-                     g.GameField = _gameField.GetNewGenerationArray(g.GameField);
-                     
-                 });
-
-                var idk = games.ToArray();
-                for (int i = 0; i < gameCount; i++)
-                {
-                    cursorXPosition = (((i % 2) + 1) * ((i % 2) + 1) * ((i % 2) + 1)) * (idk[i].GameField.GetLength(0));
-                    _drawField.DrawGameArrayOnScreen(idk[i].GameField, cursorXPosition, (i / 2) * (idk[i].GameField.GetLength(0)));
-                }
-
-            } while (!this.IsGamePaused());
+            _loop = new GameLoop();
         }
 
         public void SaveGame(bool[,] array)
         {
             _fileOperations.SaveGameToFile(array);
+        }
+
+        public void SaveGame(List<GameModelState> gameModelStates)
+        {
+            _fileOperations.SaveGameToFile(gameModelStates);
         }
 
         public void PauseGame(bool[,] gameArray)
@@ -88,10 +56,28 @@ namespace Application
             {
                 case PausedGameMenuEnum.ContinueGame:
                     this.GamePlay(gameArray);
-                    _loop.PlayGame(gameArray);
                     break;
                 case PausedGameMenuEnum.SaveGame:
-                    SaveGame(gameArray);
+                    this.SaveGame(gameArray);
+                    break;
+                case PausedGameMenuEnum.ExitTheGame:
+                    Environment.Exit(0);
+                    return;
+                default:
+                    return;
+            }
+        }
+
+        public void PauseGame(List<GameModelState> gameList)
+        {
+            PausedGameMenuEnum usersChoice = this.GetValidPausedGameInputFromUser();
+            switch (usersChoice)
+            {
+                case PausedGameMenuEnum.ContinueGame:
+                    this.PlayMultipleGames(gameList);
+                    break;
+                case PausedGameMenuEnum.SaveGame:
+                    this.SaveGame(gameList);
                     break;
                 case PausedGameMenuEnum.ExitTheGame:
                     Environment.Exit(0);
@@ -123,8 +109,6 @@ namespace Application
             _loop.PlayGame(_gameModel.GameField);
         }
 
-
-
         public bool IsGamePaused()
         {
             return (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
@@ -132,7 +116,6 @@ namespace Application
 
         public void Start()
         {
-            GameListFactory factory = new GameListFactory();
             var usersChoice = this.GetValidStartMenuInputFromUser();
             switch (usersChoice)
             {
@@ -143,10 +126,36 @@ namespace Application
                     StartGameFromLoadedFile();
                     break;
                 case StartMenuEnum.StartMultipleGames:
-                    var gameList = factory.GetGameList(8);
-                    PlayMultiGame(gameList.Count, gameList);
+                    this.PlayMultipleGames();
                     break;
             }
+        }
+
+        private void PlayMultipleGames()
+        {
+            GameListFactory factory = new GameListFactory();
+            var fullGameList = factory.GetGameList(1000);
+            var selectedGameNumberList = GetSelectedGameNumberList();
+            _loop.PlayMultiGame(8, fullGameList, selectedGameNumberList);
+            this.PauseGame(fullGameList);
+        }
+
+        private void PlayMultipleGames(List<GameModelState> fullGameList)
+        {
+            var selectedGameNumberList = GetSelectedGameNumberList();
+            _loop.PlayMultiGame(8, fullGameList, selectedGameNumberList);
+           // this.PauseGame(fullGameList,selectedGameNumberList);
+        }
+
+        private List<int> GetSelectedGameNumberList()
+        {
+            var selectedGameList = new List<int>();
+            _inputAndOutput.Write(Properties.Resources.TextOutputForFieldNumberInputForManyGames);
+            for (int i = 0; i < 8; i++)
+            {
+                selectedGameList.Add(int.Parse(_inputAndOutput.GetUserInput()));
+            }
+            return selectedGameList;
         }
 
         private int GetValidFieldSizeInputFromUser()
@@ -157,8 +166,18 @@ namespace Application
                 _inputAndOutput.Write(Properties.Resources.TextOutputForFieldSizeInput);
                 usersInput = _inputAndOutput.GetUserInput();
             } while (!(_validateUserInput.IsFieldSizeUserInputValid(usersInput)));
-
             return int.Parse(usersInput);
+        }
+
+        private int GetValidFieldNumbersForMultiGameDisplay()
+        {
+            var userChoice = "";
+            do
+            {
+                _inputAndOutput.Write(Properties.Resources.TextOutputForFieldNumberInputForManyGames);
+                userChoice = _inputAndOutput.GetUserInput();
+            } while (!(_validateUserInput.IsPausedGameUserInputValid(userChoice)));
+            return int.Parse(userChoice);
         }
 
         private PausedGameMenuEnum GetValidPausedGameInputFromUser()

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Domain;
 using FileOperations.Interfaces;
 
 namespace FileOperations
@@ -24,6 +26,32 @@ namespace FileOperations
                         value = (array[i, j] == true) ? 1 : 0;
                         file.Write(value.ToString());
                     }
+                }
+            }
+        }
+
+        public void SaveGameToFile(List<GameModelState> gameList)
+        {
+            CreateFolderOnDesktop();
+            int value;
+            var arrayLength = gameList[1].GameField.GetLength(0);
+            var path = Path.Combine(this.GetPath(), "TESTA FOLDERIS", "SavedMultiGame.txt");
+
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(path, false))
+            {
+                foreach (var game in gameList)
+                {
+                    for (int i = 0; i < arrayLength; i++)
+                    {
+                        for (int j = 0; j < arrayLength; j++)
+                        {
+                             value = (gameList[i].GameField[i, j] == true) ? 1 : 0;
+                            file.Write(value.ToString());
+                        }
+                        file.WriteLine();
+                    }
+                    file.WriteLine();
                 }
             }
         }

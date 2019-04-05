@@ -47,15 +47,18 @@ namespace Presentation
             int iterationCount, 
             int cellCount, 
             int aliveCellCount, 
-            int deadCellCount)
+            int deadCellCount,
+            int allgameCount = 1,
+            int visibleGameCount = 1)
         {
-            Console.Clear();
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
-            Console.SetCursorPosition(0, arraySize + 5);
-            Console.WriteLine($"Iteration number: " + iterationCount);
-            Console.WriteLine($"Cell Count: " + cellCount);
-            Console.WriteLine($"Alive Cell Count: " + aliveCellCount);
-            Console.WriteLine($"Dead Cell Count: " + deadCellCount);
+            Console.SetCursorPosition(0, (visibleGameCount / 2* arraySize) + 1);
+            Console.Write($" || Iteration number: " + iterationCount);
+            Console.Write($" || Cell Count: " + cellCount);
+            Console.Write($" || Alive Cell Count: " + aliveCellCount);
+            Console.Write($" || Dead Cell Count: " + deadCellCount);
+            Console.Write($" || Game Count: " + allgameCount);
+
         }
 
         private void DrawTopBorder()
@@ -63,12 +66,14 @@ namespace Presentation
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
         }
+
         private void AliveCellOutput(bool[,] arr, int x, int y)
         {
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.White, foregroundColor: ColorEnum.White);
             Console.Write($"  ");
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
         }
+
         private void DeadCellOutput(bool[,] arr, int x, int y)
         {
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.Black);
@@ -89,6 +94,7 @@ namespace Presentation
         {
             return (x == arraySize - 2) ? true : false;
         }
+
         private void DrawRightBorder(int x, int y, int cursorLeft, int cursorTop)
         {
             if (cursorLeft < 0 || cursorTop < 0 || cursorLeft > Console.BufferWidth)
@@ -98,6 +104,7 @@ namespace Presentation
             _colorOfOutput.SetColor(backgroundColor: ColorEnum.Black, foregroundColor: ColorEnum.White);
             Console.Write("===");
         }
+
         private void DrawBottomBorder(int x, int y, int cursorLeft, int cursorTop)
         {
             if (cursorLeft < 0 || cursorTop < 0 || cursorLeft > Console.BufferWidth)

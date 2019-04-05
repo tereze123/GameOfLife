@@ -1,4 +1,7 @@
 ﻿using Domain.Interfaces;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.Statistics
 {
@@ -29,6 +32,36 @@ namespace Domain.Statistics
         public int GetDeadCellCount(int allCellCount, int aliveCellCount)
         {
             return allCellCount - aliveCellCount;
+        }
+
+        public int GetAllCellCountMultiGame(List<GameModelState> gameList)
+        {
+            int allCellCount = 0;
+            ConcurrentBag<int> countOfAllCells = new ConcurrentBag<int>();
+            Parallel.ForEach(gameList, (g) =>
+            {
+                countOfAllCells.Add(this.GetAllCellCount(g.GameField));
+            });
+            foreach (var aliveCell in countOfAllCells)
+            {
+                allCellCount += aliveCell;
+            }
+            return allCellCount;
+        }
+
+        public int GetAliveCellCountMultiGame(List<GameModelState> gameList)
+        {
+            int aliveCellCount = 0;
+            ConcurrentBag<int> countOfAllCells = new ConcurrentBag<int>();
+            Parallel.ForEach(gameList, (g) =>
+            {
+                countOfAllCells.Add(this.GetAliveCellCount(g.GameField));
+            });
+            foreach (var aliveCell in countOfAllCells)
+            {
+                aliveCellCount += aliveCell;
+            }
+            return aliveCellCount;
         }
     }
 }

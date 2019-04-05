@@ -61,6 +61,15 @@ namespace Application.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter the number of GameOfLife you want to see on the board.
+        /// </summary>
+        internal static string TextOutputForFieldNumberInputForManyGames {
+            get {
+                return ResourceManager.GetString("TextOutputForFieldNumberInputForManyGames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please set the size of field (10-50).
         /// </summary>
         internal static string TextOutputForFieldSizeInput {
